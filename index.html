@@ -1,203 +1,733 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Graphics Design System | Modern UI/UX Principles</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Slow In & Slow Out: Animation Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Color System - Based on Color Psychology */
+        :root {
+            /* Light Mode Colors */
+            --primary-light: #FF6B6B; /* Warm red for energy and attention */
+            --secondary-light: #4ECDC4; /* Teal for balance and creativity */
+            --accent-light: #FFE66D; /* Yellow for optimism and focus */
+            --bg-light: #F7FFF7; /* Very light green for calmness */
+            --text-light: #292F36; /* Dark gray-blue for readability */
+            --card-light: #FFFFFF; /* Pure white for clarity */
+            --border-light: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-light: rgba(41, 47, 54, 0.1); /* Text color with opacity */
+            
+            /* Technique Colors */
+            --linear-light: #E65100; /* Deep Orange for Linear Motion */
+            --ease-light: #388E3C; /* Green for Easing */
+            --ball-light: #1E88E5; /* Blue for balls */
+            
+            /* Dark Mode Colors */
+            --primary-dark: #FF9E9E; /* Softer red for dark mode */
+            --secondary-dark: #6ED3CF; /* Brighter teal for contrast */
+            --accent-dark: #FFEE93; /* Softer yellow */
+            --bg-dark: #1A1A2E; /* Deep navy for reduced eye strain */
+            --text-dark: #E6E6E6; /* Light gray for readability */
+            --card-dark: #16213E; /* Darker blue for cards */
+            --border-dark: #2D3748; /* Dark gray border */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Darker shadow */
+            
+            /* Technique Colors Dark */
+            --linear-dark: #FFAB40; /* Lighter Orange */
+            --ease-dark: #A5D6A7; /* Lighter Green */
+            --ball-dark: #64B5F6; /* Lighter Blue */
+            
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        html.dark h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+        }
+
+        html.dark h2::after {
+            background: var(--secondary-dark);
+        }
+
+        p {
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Demo Container */
+        .demo-container {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-light) 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            margin: var(--space-xl) 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border: 2px solid var(--border-light);
+        }
+
+        html.dark .demo-container {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-dark) 100%);
+            border-color: var(--border-dark);
+        }
+
+        /* Balls */
+        .ball {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(30, 136, 229, 0.7);
+            transition: all var(--transition-base);
+        }
+
+        .linear-motion {
+            background: radial-gradient(circle at 30% 30%, var(--ball-light), var(--linear-light));
+            animation: linearMove 3s infinite linear alternate;
+        }
+
+        .ease-motion {
+            background: radial-gradient(circle at 30% 30%, var(--ball-light), var(--ease-light));
+            animation: easeMove 3s infinite ease-in-out alternate;
+        }
+
+        html.dark .linear-motion {
+            background: radial-gradient(circle at 30% 30%, var(--ball-dark), var(--linear-dark));
+            box-shadow: 0 0 20px rgba(100, 181, 246, 0.7);
+        }
+
+        html.dark .ease-motion {
+            background: radial-gradient(circle at 30% 30%, var(--ball-dark), var(--ease-dark));
+            box-shadow: 0 0 20px rgba(165, 214, 167, 0.7);
+        }
+
+        /* Ball Animations */
+        @keyframes linearMove {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(150px); }
+        }
+
+        @keyframes easeMove {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(150px); }
+        }
+
+        /* Ground Line */
+        .demo-container::before {
+            content: '';
+            position: absolute;
+            bottom: 40%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
+            opacity: 0.3;
+        }
+
+        html.dark .demo-container::before {
+            background: linear-gradient(90deg, transparent, var(--text-dark), transparent);
+        }
+
+        /* List Items with Icons */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            transition: background-color var(--transition-base);
+        }
+
+        .list-item:hover {
+            background-color: rgba(78, 205, 196, 0.1);
+        }
+
+        html.dark .list-item:hover {
+            background-color: rgba(110, 211, 207, 0.1);
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xs);
+        }
+
+        .icon-linear {
+            background-color: var(--linear-light);
+        }
+
+        .icon-ease {
+            background-color: var(--ease-light);
+        }
+
+        html.dark .icon-linear {
+            background-color: var(--linear-dark);
+        }
+
+        html.dark .icon-ease {
+            background-color: var(--ease-dark);
+        }
+
+        /* Comparison Cards */
+        .comparison-card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 5px 15px var(--shadow-light);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .comparison-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 5px 15px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce);
+        }
+
+        html.dark #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        html.dark #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color var(--transition-base);
+        }
+
+        html.dark #theme-toggle svg {
+            color: var(--text-dark);
+        }
+
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        html.dark .sun-icon {
+            display: none;
+        }
+
+        html.dark .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Elements */
+        .linear-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--linear-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        html.dark .linear-vector {
+            background-color: var(--linear-dark);
+        }
+
+        .ease-vector {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--ease-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        html.dark .ease-vector {
+            background-color: var(--ease-dark);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .demo-container {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility Focus States */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--secondary-light);
+            outline-offset: 2px;
+        }
+
+        html.dark button:focus-visible, html.dark a:focus-visible {
+            outline-color: var(--secondary-dark);
+        }
+
+        /* Material Icons */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
-            <a href="index.html" class="header__logo">
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="var(--primary-500)"/>
-                    <path d="M22 12C22 13.1046 21.1046 14 20 14C18.8954 14 18 13.1046 18 12C18 10.8954 18.8954 10 20 10C21.1046 10 22 10.8954 22 12Z" fill="white"/>
-                    <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="white"/>
-                    <path d="M16 24C19.3137 24 22 21.3137 22 18H10C10 21.3137 12.6863 24 16 24Z" fill="white"/>
-                </svg>
-                <span>Graphics</span>
-            </a>
-            <nav class="header__nav">
-                <a href="index.html" class="header__link header__link--active">Home</a>
-                <a href="about.html" class="header__link">About</a>
-                <a href="principles.html" class="header__link">Principles</a>
-                <a href="elements.html" class="header__link">Elements</a>
-                <a href="contact.html" class="header__link">Contact</a>
-            </nav>
-            <div class="header__actions">
-                <button class="theme-toggle" aria-label="Toggle theme">
-                    <span class="theme-toggle__thumb"></span>
-                </button>
-                <button class="header__mobile-toggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-    </header>
+<body class="light">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <!-- Decorative Background Elements -->
+    <div class="linear-vector" style="top: 10%; left: 10%;"></div>
+    <div class="ease-vector" style="top: 30%; right: 15%;"></div>
+    <div class="linear-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="ease-vector" style="bottom: 10%; left: 15%;"></div>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <div class="hero__content">
-                <h1 class="hero__title">Design System for Modern Digital Experiences</h1>
-                <p class="hero__description">A comprehensive collection of design principles, UI components, and interactive patterns to create stunning visual interfaces with cutting-edge animations.</p>
-                <div class="hero__buttons">
-                    <a href="#explore" class="button button--lg">Explore Components</a>
-                    <a href="principles.html" class="button button--lg button--outline">Design Principles</a>
-                </div>
-            </div>
-            <img src="https://via.placeholder.com/600x400" alt="Design System Illustration" class="hero__image">
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="explore">
-        <div class="container">
-            <h2 class="section__title">Core Features</h2>
-            <div class="features__grid">
-                <div class="feature-card fade-up" style="animation-delay: 0.1s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <h3 class="feature-card__title">Color System</h3>
-                    <p class="feature-card__description">Comprehensive color palettes with accessibility contrast ratios and dynamic theming support.</p>
-                </div>
-                <div class="feature-card fade-up" style="animation-delay: 0.2s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-shapes"></i>
-                    </div>
-                    <h3 class="feature-card__title">Shape Language</h3>
-                    <p class="feature-card__description">Consistent shape system with configurable radius tokens for buttons, cards and more.</p>
-                </div>
-                <div class="feature-card fade-up" style="animation-delay: 0.3s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <h3 class="feature-card__title">Motion Design</h3>
-                    <p class="feature-card__description">Micro-interactions, transitions and animations with customizable timing functions.</p>
-                </div>
-                <div class="feature-card fade-up" style="animation-delay: 0.4s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-text-height"></i>
-                    </div>
-                    <h3 class="feature-card__title">Typography</h3>
-                    <p class="feature-card__description">Responsive typography scale with perfect vertical rhythm and readability optimization.</p>
-                </div>
-                <div class="feature-card fade-up" style="animation-delay: 0.5s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-puzzle-piece"></i>
-                    </div>
-                    <h3 class="feature-card__title">UI Components</h3>
-                    <p class="feature-card__description">50+ accessible components with multiple variants and customization options.</p>
-                </div>
-                <div class="feature-card fade-up" style="animation-delay: 0.6s">
-                    <div class="feature-card__icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3 class="feature-card__title">Responsive</h3>
-                    <p class="feature-card__description">Fully responsive layouts that adapt to any screen size with mobile-first approach.</p>
+            <div class="text-center py-12 reveal">
+                <h1>Slow In & Slow Out</h1>
+                <p class="text-xl mt-4">The Physics of Movement</p>
+                
+                <!-- Demo Container -->
+                <div class="demo-container mt-8 mb-12 reveal">
+                    <div class="ball linear-motion"></div>
+                    <div class="ball ease-motion"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials">
+    <!-- What Is Section -->
+    <section>
         <div class="container">
-            <h2 class="section__title">Trusted by Design Teams</h2>
-            <div class="testimonials__slider">
-                <div class="testimonial-slide">
-                    <p class="testimonial-slide__content">"This design system has transformed our workflow. We've reduced design debt by 60% and improved consistency across all our products."</p>
-                    <div class="testimonial-slide__author">
-                        <img src="https://via.placeholder.com/80x80" alt="Sarah Johnson" class="testimonial-slide__avatar">
-                        <div class="testimonial-slide__info">
-                            <div class="testimonial-slide__name">Sarah Johnson</div>
-                            <div class="testimonial-slide__role">Lead Designer, TechCorp</div>
+            <div class="card reveal">
+                <h2>What is Slow In & Slow Out?</h2>
+                <div class="prose text-gray-700 dark:text-gray-300">
+                    <p>
+                        Slow In and Slow Out, also known as "easing," is the principle that objects need time to accelerate at the beginning of a movement and decelerate at the end. In traditional animation terms, this meant drawing more frames near the start and end poses and fewer frames in the middle.
+                    </p>
+                    <p>
+                        This principle adds realism to animation because it mimics how inertia and acceleration/deceleration work in the real world. Without slow in and slow out, motion appears mechanical and unnatural, as if the object instantly changes speed.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstration Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Comparing Motion Types</h2>
+                <p>See the difference between linear motion and easing:</p>
+                
+                <div class="demo-container">
+                    <div class="ball linear-motion"></div>
+                    <div class="ball ease-motion"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="comparison-card reveal" style="transition-delay: 0.1s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">straight</span>
+                            Linear Motion
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">speed</span>
+                                </div>
+                                <p>Constant speed throughout the movement</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">robot</span>
+                                </div>
+                                <p>Appears mechanical and unnatural</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">warning</span>
+                                </div>
+                                <p>Rarely used in character animation</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">curve_range</span>
+                            Slow In/Slow Out
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-ease">
+                                    <span class="material-symbols-rounded">trending_up</span>
+                                </div>
+                                <p>Accelerates at the start, decelerates at the end</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-ease">
+                                    <span class="material-symbols-rounded">nature_people</span>
+                                </div>
+                                <p>Appears natural, smooth, and realistic</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-ease">
+                                    <span class="material-symbols-rounded">star</span>
+                                </div>
+                                <p>Essential for lifelike character animation</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Psychology Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Psychology Behind Slow In & Slow Out</h2>
+                <p>
+                    Slow In and Slow Out aligns animation with our fundamental understanding of physics. We intuitively expect objects with mass to take time to get up to speed and slow down, due to inertia and forces like friction.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--linear-light);">physics</span>
+                            <h3 class="text-xl font-semibold">Inertia</h3>
                         </div>
+                        <p>Our brains expect objects to resist changes in motion, requiring time to accelerate or decelerate.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--ease-light);">psychology</span>
+                            <h3 class="text-xl font-semibold">Believability</h3>
+                        </div>
+                        <p>Eased motion matches our real-world experience, making animation feel more authentic.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">visibility</span>
+                            <h3 class="text-xl font-semibold">Visual Comfort</h3>
+                        </div>
+                        <p>Gradual changes are easier on the eyes and create more pleasing motion.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta">
+    <!-- Examples Section -->
+    <section>
         <div class="container">
-            <div class="cta__content">
-                <h2 class="cta__title">Ready to elevate your design workflow?</h2>
-                <p class="cta__description">Join thousands of designers and developers using our system to build better products faster.</p>
-                <div class="cta__buttons">
-                    <a href="contact.html" class="button button--lg pop-in">Get Started</a>
-                    <a href="about.html" class="button button--lg button--outline pop-in" style="animation-delay: 0.1s">Learn More</a>
+            <div class="card reveal">
+                <h2>Examples in Animation</h2>
+                <p>These principles are used throughout animation to enhance realism:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--linear-light);">directions_walk</span>
+                            <h3 class="text-xl font-semibold">Walk Cycles</h3>
+                        </div>
+                        <p>Characters ease into and out of each step, never moving at constant speed.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--ease-light);">pan_tool</span>
+                            <h3 class="text-xl font-semibold">Gestures</h3>
+                        </div>
+                        <p>Hand movements accelerate at the start and decelerate at the end.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">moving</span>
+                            <h3 class="text-xl font-semibold">Camera Moves</h3>
+                        </div>
+                        <p>Virtual cameras ease into and out of movements for cinematic quality.</p>
+                    </div>
                 </div>
             </div>
-            <div class="cta__pattern"></div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__container">
-                <div>
-                    <div class="footer__logo">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="var(--primary-500)"/>
-                            <path d="M16.5 9C16.5 9.82843 15.8284 10.5 15 10.5C14.1716 10.5 13.5 9.82843 13.5 9C13.5 8.17157 14.1716 7.5 15 7.5C15.8284 7.5 16.5 8.17157 16.5 9Z" fill="white"/>
-                            <path d="M10.5 9C10.5 9.82843 9.82843 10.5 9 10.5C8.17157 10.5 7.5 9.82843 7.5 9C7.5 8.17157 8.17157 7.5 9 7.5C9.82843 7.5 10.5 8.17157 10.5 9Z" fill="white"/>
-                            <path d="M12 18C14.4853 18 16.5 15.9853 16.5 13.5H7.5C7.5 15.9853 9.51472 18 12 18Z" fill="white"/>
-                        </svg>
-                        <span>Graphics Design System</span>
-                    </div>
-                    <p class="footer__text">A comprehensive design system for creating beautiful, consistent user interfaces with motion and interaction at its core.</p>
-                </div>
-                <div>
-                    <h3 class="footer__title">Resources</h3>
-                    <div class="footer__links">
-                        <a href="principles.html" class="footer__link">Design Principles</a>
-                        <a href="elements.html" class="footer__link">UI Elements</a>
-                        <a href="colors.html" class="footer__link">Color System</a>
-                        <a href="animations.html" class="footer__link">Motion Guidelines</a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="footer__title">Company</h3>
-                    <div class="footer__links">
-                        <a href="about.html" class="footer__link">About Us</a>
-                        <a href="contact.html" class="footer__link">Contact</a>
-                        <a href="privacy.html" class="footer__link">Privacy Policy</a>
-                        <a href="terms.html" class="footer__link">Terms of Service</a>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="footer__title">Connect</h3>
-                    <div class="footer__social">
-                        <a href="#" class="footer__social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="footer__social-link"><i class="fab fa-github"></i></a>
-                        <a href="#" class="footer__social-link"><i class="fab fa-dribbble"></i></a>
-                        <a href="#" class="footer__social-link"><i class="fab fa-figma"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer__divider"></div>
-            <div class="footer__bottom">
-                <p>&copy; 2023 Graphics Design System. All rights reserved.</p>
-                <div>
-                    <a href="sitemap.html" class="footer__link">Sitemap</a>
-                </div>
-            </div>
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">info</span> About</a>
         </div>
-        <button class="footer__back-to-top">
-            <i class="fas fa-arrow-up"></i>
-        </button>
     </footer>
 
-    <script src="js/main.js"></script>
-    <script src="js/darkmode.js"></script>
-    <script src="js/navigation.js"></script>
-    <script src="js/scroll-animations.js"></script>
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Interactive Balls - Pause animation on hover
+        const linearBall = document.querySelector('.linear-motion');
+        const easeBall = document.querySelector('.ease-motion');
+        
+        linearBall.addEventListener('mouseenter', () => {
+            linearBall.style.animationPlayState = 'paused';
+        });
+        linearBall.addEventListener('mouseleave', () => {
+            linearBall.style.animationPlayState = 'running';
+        });
+        
+        easeBall.addEventListener('mouseenter', () => {
+            easeBall.style.animationPlayState = 'paused';
+        });
+        easeBall.addEventListener('mouseleave', () => {
+            easeBall.style.animationPlayState = 'running';
+        });
+    </script>
 </body>
 </html>
