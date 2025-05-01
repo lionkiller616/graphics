@@ -1,0 +1,212 @@
+/* Emphasis Principle Styles */
+#emphasis-card .card__visual {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    height: 180px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#emphasis-card:hover .card__visual {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+#emphasis-card .card__visual::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ff4081;
+    box-shadow: 0 0 0 15px rgba(255, 64, 129, 0.3),
+                0 0 0 30px rgba(255, 64, 129, 0.1);
+    animation: emphasisPulse 2s infinite;
+}
+
+@keyframes emphasisPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.7),
+                    0 0 0 15px rgba(255, 64, 129, 0.3),
+                    0 0 0 30px rgba(255, 64, 129, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 0 15px rgba(255, 64, 129, 0),
+                    0 0 0 30px rgba(255, 64, 129, 0),
+                    0 0 0 45px rgba(255, 64, 129, 0);
+    }
+}
+
+/* Emphasis Details Section */
+#emphasis-details {
+    display: none;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 2rem 0;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.emphasis-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.emphasis-example {
+    position: relative;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f5f5f5;
+}
+
+.emphasis-example:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.emphasis-example::after {
+    content: attr(data-type);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.emphasis-example:hover::after {
+    transform: translateY(0);
+}
+
+/* Color Emphasis */
+.emphasis-example.color .item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #ddd;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.emphasis-example.color .item.highlight {
+    background: #ff4081;
+    transform: scale(1.2);
+    box-shadow: 0 4px 10px rgba(255, 64, 129, 0.4);
+}
+
+/* Size Emphasis */
+.emphasis-example.size .item {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #2196F3;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.emphasis-example.size .item.highlight {
+    width: 60px;
+    height: 60px;
+}
+
+/* Position Emphasis */
+.emphasis-example.position {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emphasis-example.position .item {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: #4CAF50;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
+
+.emphasis-example.position .item.highlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 2;
+}
+
+/* Interactive Emphasis Demo */
+.emphasis-demo {
+    width: 100%;
+    margin: 2rem 0;
+    position: relative;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.demo-object {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    background: #3F51B5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.demo-object.emphasized {
+    background: #FF5722;
+    transform: scale(1.3);
+    box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3);
+    z-index: 2;
+}
+
+.emphasis-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.emphasis-controls button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background: #3F51B5;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.emphasis-controls button:hover {
+    background: #303F9F;
+    transform: translateY(-2px);
+}
+
+.emphasis-controls button.active {
+    background: #FF5722;
+}

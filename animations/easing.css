@@ -1,0 +1,70 @@
+/* Easing function visualizations */
+.easing-visualizer {
+    position: relative;
+    overflow: hidden;
+}
+
+.easing-line {
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 1.5s linear;
+}
+
+.easing-demo {
+    transition: transform 1.5s linear, background-color 0.3s ease;
+}
+
+/* Specific easing examples */
+.easing-linear .easing-line,
+.easing-linear .easing-demo {
+    transition-timing-function: linear;
+}
+
+.easing-ease-in .easing-line,
+.easing-ease-in .easing-demo {
+    transition-timing-function: ease-in;
+}
+
+.easing-ease-out .easing-line,
+.easing-ease-out .easing-demo {
+    transition-timing-function: ease-out;
+}
+
+.easing-ease-in-out .easing-line,
+.easing-ease-in-out .easing-demo {
+    transition-timing-function: ease-in-out;
+}
+
+/* Play state controls */
+.playing .easing-line {
+    transform: scaleX(1);
+}
+
+.playing .easing-demo {
+    transform: translateX(calc(100vw - 100px));
+}
+
+/* Custom bezier curve visualization */
+.bezier-curve {
+    width: 100%;
+    height: 200px;
+    background-color: #f3f4f6;
+    position: relative;
+}
+
+.bezier-path {
+    stroke: #3b82f6;
+    stroke-width: 2;
+    fill: none;
+}
+
+.bezier-handle {
+    fill: #ef4444;
+    cursor: move;
+}
+
+.bezier-handle-line {
+    stroke: #9ca3af;
+    stroke-width: 1;
+    stroke-dasharray: 3,3;
+}

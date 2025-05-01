@@ -1,0 +1,234 @@
+/* Contrast Principle Styles */
+#contrast-card .card__visual {
+    background: linear-gradient(135deg, #000000 0%, #434343 100%);
+    height: 180px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#contrast-card:hover .card__visual {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+#contrast-card .card__visual::before {
+    content: 'CONTRAST';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    animation: contrastPulse 3s infinite alternate;
+}
+
+@keyframes contrastPulse {
+    0% {
+        opacity: 0.3;
+        text-shadow: 0 0 5px rgba(255,255,255,0.3);
+    }
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(255,255,255,0.8);
+    }
+}
+
+/* Contrast Details Section */
+#contrast-details {
+    display: none;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 2rem 0;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.contrast-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.contrast-example {
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.contrast-example:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.contrast-example h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.contrast-example p {
+    font-size: 0.9rem;
+}
+
+/* Color Contrast Demo */
+.contrast-demo {
+    width: 100%;
+    margin: 2rem 0;
+    position: relative;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.contrast-slider {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.contrast-slider input {
+    width: 100%;
+}
+
+.contrast-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Type Contrast */
+.type-contrast {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.type-pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+.type-pair:hover {
+    background: #e0e0e0;
+    transform: translateX(5px);
+}
+
+.type-sample {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.type-info {
+    text-align: right;
+}
+
+.type-info small {
+    display: block;
+    color: #666;
+}
+
+/* Contrast Checker Tool */
+.contrast-checker {
+    background: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.contrast-checker-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.contrast-preview {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.contrast-preview-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    text-align: center;
+}
+
+.color-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.color-input {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.color-input label {
+    min-width: 80px;
+}
+
+.color-input input[type="color"] {
+    width: 50px;
+    height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.color-input input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.contrast-score {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.contrast-score.aaa {
+    background: #4CAF50;
+    color: white;
+}
+
+.contrast-score.aa {
+    background: #8BC34A;
+    color: white;
+}
+
+.contrast-score.a {
+    background: #FFC107;
+    color: #333;
+}
+
+.contrast-score.fail {
+    background: #F44336;
+    color: white;
+}

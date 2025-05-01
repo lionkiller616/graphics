@@ -1,0 +1,92 @@
+/* colors/main.css */
+
+/* Base styles - Tailwind handles most of this, but add custom ones here */
+/* .body {
+    /* Font family is set in HTML head for Tailwind */
+    /* Background and text color are set in HTML body for Tailwind */
+/* } */ 
+
+.container {
+    max-width: 1200px; /* Limit container width */
+}
+
+/* Section animation styles are in the HTML <style> block */
+
+/* Header styles handled by Tailwind utility classes */
+
+/* Hero section styles handled by Tailwind utility classes and inline style */
+
+/* General section padding and background handled by Tailwind */
+
+/* Headings and text styles handled by Tailwind */
+
+/* Custom animations */
+@keyframes slideInUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Apply animations */
+.animate-slide-in-up {
+    animation: slideInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-in-out forwards;
+}
+
+/* Add more complex animations here if needed, e.g., for specific elements */
+/* Example: Pulse effect */
+.animate-pulse-once {
+    animation: pulse 1s ease-in-out forwards;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* Responsive adjustments - Tailwind handles most of this */
+@media (max-width: 768px) {
+    /* Adjustments for smaller screens if needed */
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    header nav ul {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+     .hero-section h2 {
+        font-size: 3xl; /* Adjust font size */
+     }
+     .hero-section p {
+        font-size: lg; /* Adjust font size */
+     }
+}

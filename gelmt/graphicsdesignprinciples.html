@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphic Design Principles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS Variables for Themes (using a neutral theme for the index) */
+        :root {
+            /* Light Mode - Neutral Theme */
+            --bg-color-light: #f0f0f0; /* Light Grey */
+            --text-color-light: #333333; /* Dark Grey */
+            --card-bg-light: #ffffff;
+            --card-text-light: #333333;
+            --section-bg-light: #f0f0f0;
+            --section-text-light: #333333;
+            --link-color-light: #007bff; /* Blue */
+            --link-hover-color-light: #0056b3; /* Darker Blue */
+            --blurred-bg-light: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjBmMGYwIiAvPiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZWNlY2VjIiAvPiAgICA8L2xpbmVhckdyYWRpZW50PiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNncmFkMSkiIC8+PC9zdmc+'); /* Light grey gradient */
+        }
+
+        /* Dark Mode - Neutral Theme */
+        .dark-mode {
+            --bg-color: #333333; /* Dark Grey */
+            --text-color: #f0f0f0; /* Light Grey */
+            --card-bg: #555555; /* Medium Grey */
+            --card-text: #f0f0f0;
+            --section-bg: #333333;
+            --section-text: #f0f0f0;
+            --link-color: #66b2ff; /* Lighter Blue */
+            --link-hover-color: #4d94d1; /* Medium Blue */
+             --blurred-bg-dark: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC4yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDgwMCA2MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4gICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMzMzMzMzMiIC8+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM1NTU1NTUiIC8+Pj4KICAgIDwvbGluZWFyR3JhZGllbnQ+ICAgIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSJ1cmwoI2dyYWQyKSIgLz48L3N2Zz4='); /* Dark grey gradient */
+        }
+
+        /* Apply Theme Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            position: relative; /* Needed for blurred background */
+        }
+
+        /* Blurred Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--blurred-bg, var(--blurred-bg-light));
+            background-size: cover;
+            filter: blur(20px); /* Apply blur effect */
+            z-index: -1; /* Place behind content */
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        section {
+             background-color: var(--section-bg, var(--card-bg-light));
+             color: var(--section-text, var(--card-text-light));
+             transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .color-card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Apply animations */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+         .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            transition: fill 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle svg {
+            fill: #f0f0f0;
+        }
+
+        /* Link Styling */
+        .principle-link {
+            color: var(--link-color, var(--link-color-light));
+            text-decoration: none;
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            display: block; /* Make the whole block clickable */
+            padding: 12px 0; /* py-3 */
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* subtle separator */
+            transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        }
+
+        .dark-mode .principle-link {
+             border-bottom-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .principle-link:hover {
+            color: var(--link-hover-color, var(--link-hover-color-light));
+        }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="p-8">
+
+    <button id="themeToggle" class="theme-toggle">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1s1-.45 1-1V3c0-.55-.45-1-1-1zm8.59 2.91l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM4.7 5.61l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM21 11h-1c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm-18 0H3c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm15.3 5.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM5.61 19.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>
+         <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c.4-.4.9-.6 1.4-.6.5 0 1 .2 1.4.6.4.4.6.9.6 1.4 0 .5-.2 1-.6 1.4-.4.4-.9.6-1.4.6-.5 0-1-.2-1.4-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.4zm-.7 10.4c-3.3 0-6-2.7-6-6s2.7-6 6-6c.6 0 1.1.1 1.6.3-.4.8-.6 1.7-.6 2.7 0 3.3 2.7 6 6 6.1 1 .1 1.9-.2 2.7-.6.2.5.3 1 .3 1.6 0 3.3-2.7 6-6 6z"/></svg>
+    </button>
+
+
+    <header class="text-center my-12 animate-fadeIn">
+        <h1 class="text-5xl font-bold mb-4">Graphic Design Principles</h1>
+        <p class="text-xl">Explore the core concepts of visual design</p>
+    </header>
+
+    <section class="max-w-2xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6 text-center">Principles</h2>
+        <nav>
+            <ul>
+                <li><a href="balance.html" class="principle-link">Balance</a></li>
+                <li><a href="emphasis.html" class="principle-link">Emphasis</a></li>
+                <li><a href="proportion.html" class="principle-link">Proportion</a></li>
+                <li><a href="repetition.html" class="principle-link">Repetition</a></li>
+                <li><a href="rhythm.html" class="principle-link">Rhythm</a></li>
+                <li><a href="unity.html" class="principle-link">Unity</a></li>
+                <li><a href="whitespace.html" class="principle-link">White Space</a></li>
+                <li><a href="contrast.html" class="principle-link">Contrast</a></li> </ul>
+        </nav>
+    </section>
+
+    <footer class="text-center my-12 text-sm animate-fadeIn">
+        <p>&copy; 2023 Design Principles Explained</p>
+    </footer>
+
+    <script>
+        // JavaScript for theme toggle
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+
+            // Check for saved theme in local storage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                 // Default to light mode if no theme is saved or saved theme is not dark
+                body.classList.remove('dark-mode');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+
+                // Toggle icons
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+
+                // Save theme preference to local storage
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+             // Simple fade-in animation for initial load
+             body.style.opacity = 0;
+             window.requestAnimationFrame(() => {
+                 body.style.transition = 'opacity 1s ease-in-out';
+                 body.style.opacity = 1;
+             });
+        });
+
+    </script>
+
+</body>
+</html>

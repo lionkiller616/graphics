@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Principles & Psychology</title>
+    <link rel="stylesheet" href="principles/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="color-wheel-container">
+        <div class="color-wheel" id="colorWheel"></div>
+        <div class="color-psychology" id="colorPsychology"></div>
+    </div>
+
+    <header class="animated-header">
+        <div class="logo">
+            <div class="logo-shape"></div>
+            <div class="logo-shape"></div>
+            <div class="logo-shape"></div>
+        </div>
+        <h1>Design Principles <span class="amp">&</span> Psychology</h1>
+        <div class="header-decoration">
+            <div class="decoration-circle"></div>
+            <div class="decoration-triangle"></div>
+            <div class="decoration-square"></div>
+        </div>
+    </header>
+
+    <nav class="sticky-nav">
+        <ul>
+            <li><a href="#gestalt" class="nav-link">Gestalt</a></li>
+            <li><a href="#contrast" class="nav-link">Contrast</a></li>
+            <li><a href="#balance" class="nav-link">Balance</a></li>
+            <li><a href="#hierarchy" class="nav-link">Hierarchy</a></li>
+            <li><a href="#alignment" class="nav-link">Alignment</a></li>
+            <li><a href="#repetition" class="nav-link">Repetition</a></li>
+            <li><a href="#proximity" class="nav-link">Proximity</a></li>
+            <li><a href="#color" class="nav-link">Color</a></li>
+        </ul>
+        <div class="nav-highlight"></div>
+    </nav>
+
+    <main>
+        <section id="gestalt" class="principle-section">
+            <div class="section-header">
+                <h2>Gestalt Principles</h2>
+                <div class="section-icon">
+                    <div class="gestalt-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Gestalt psychology emphasizes that humans naturally perceive patterns and wholes rather than disconnected parts. Our brains automatically organize visual elements into coherent groups based on principles like similarity, continuity, and closure.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">🧠</div>
+                        <p>The brain completes incomplete shapes (closure) to reduce cognitive load and make sense of visual information more efficiently.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="gestalt-demo">
+                        <div class="gestalt-circle" id="gestaltCircle"></div>
+                        <div class="gestalt-square" id="gestaltSquare"></div>
+                        <div class="gestalt-triangle" id="gestaltTriangle"></div>
+                    </div>
+                    <button class="demo-btn" id="gestaltBtn">Animate Principle</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contrast" class="principle-section">
+            <div class="section-header">
+                <h2>Contrast</h2>
+                <div class="section-icon">
+                    <div class="contrast-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Contrast creates visual interest and directs attention. The human eye is drawn to areas of high contrast, making it a powerful tool for emphasizing important elements and creating visual hierarchy.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">👁️</div>
+                        <p>High-contrast elements are processed 20-30% faster by the visual cortex, making them essential for quick comprehension.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="contrast-demo" id="contrastDemo">
+                        <div class="contrast-element"></div>
+                        <div class="contrast-element"></div>
+                        <div class="contrast-element"></div>
+                    </div>
+                    <button class="demo-btn" id="contrastBtn">Toggle Contrast</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="balance" class="principle-section">
+            <div class="section-header">
+                <h2>Balance</h2>
+                <div class="section-icon">
+                    <div class="balance-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Balance creates visual stability and harmony. Humans have an innate preference for balanced compositions, which feel more comfortable and aesthetically pleasing. Symmetrical balance conveys formality, while asymmetrical balance creates dynamic interest.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">⚖️</div>
+                        <p>Studies show balanced designs are perceived as more trustworthy, while unbalanced compositions can create tension or excitement.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="balance-demo" id="balanceDemo">
+                        <div class="balance-scale">
+                            <div class="balance-left"></div>
+                            <div class="balance-center"></div>
+                            <div class="balance-right"></div>
+                        </div>
+                    </div>
+                    <button class="demo-btn" id="balanceBtn">Adjust Balance</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="hierarchy" class="principle-section">
+            <div class="section-header">
+                <h2>Visual Hierarchy</h2>
+                <div class="section-icon">
+                    <div class="hierarchy-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Visual hierarchy guides the viewer's eye through content in order of importance. The brain processes visual information sequentially, and hierarchy leverages this by creating clear focal points and flow patterns.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">🔍</div>
+                        <p>Users typically scan web pages in an F-shaped pattern, making top-left placement most valuable for important elements.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="hierarchy-demo" id="hierarchyDemo">
+                        <div class="hierarchy-element primary">1. Primary</div>
+                        <div class="hierarchy-element secondary">2. Secondary</div>
+                        <div class="hierarchy-element tertiary">3. Tertiary</div>
+                    </div>
+                    <button class="demo-btn" id="hierarchyBtn">Show Eye Flow</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="alignment" class="principle-section">
+            <div class="section-header">
+                <h2>Alignment</h2>
+                <div class="section-icon">
+                    <div class="alignment-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Alignment creates order and organization, reducing cognitive load. The brain seeks patterns and structure, and proper alignment satisfies this need while creating invisible connections between elements.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">📐</div>
+                        <p>Proper alignment can improve reading speed by up to 15% and comprehension by 20% by creating clear visual paths.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="alignment-demo" id="alignmentDemo">
+                        <div class="alignment-element"></div>
+                        <div class="alignment-element"></div>
+                        <div class="alignment-element"></div>
+                    </div>
+                    <button class="demo-btn" id="alignmentBtn">Toggle Alignment</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="repetition" class="principle-section">
+            <div class="section-header">
+                <h2>Repetition</h2>
+                <div class="section-icon">
+                    <div class="repetition-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Repetition creates rhythm and unity. The brain recognizes and remembers repeated patterns more easily, creating a sense of cohesion and brand recognition. It also establishes expectations that make interfaces more intuitive.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">🔄</div>
+                        <p>Repeating visual elements increases familiarity, which can improve user comfort and trust by up to 40%.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="repetition-demo" id="repetitionDemo"></div>
+                    <button class="demo-btn" id="repetitionBtn">Create Pattern</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="proximity" class="principle-section">
+            <div class="section-header">
+                <h2>Proximity</h2>
+                <div class="section-icon">
+                    <div class="proximity-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Proximity creates relationships between elements. Objects placed close together are perceived as related, while space separates unrelated items. This principle helps organize information and reduce visual clutter.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">👥</div>
+                        <p>The brain groups elements within 50px as related, making proximity a powerful tool for information architecture.</p>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="proximity-demo" id="proximityDemo">
+                        <div class="proximity-group">
+                            <div class="proximity-element"></div>
+                            <div class="proximity-element"></div>
+                        </div>
+                        <div class="proximity-group">
+                            <div class="proximity-element"></div>
+                            <div class="proximity-element"></div>
+                        </div>
+                    </div>
+                    <button class="demo-btn" id="proximityBtn">Adjust Grouping</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="color" class="principle-section">
+            <div class="section-header">
+                <h2>Color Theory</h2>
+                <div class="section-icon">
+                    <div class="color-icon"></div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="principle-explanation">
+                    <h3>Psychological Basis</h3>
+                    <p>Color evokes emotional responses and influences perception. Different wavelengths of light stimulate the brain in distinct ways, triggering emotional and physiological responses that vary by culture, context, and personal experience.</p>
+                    <div class="psychology-fact">
+                        <div class="fact-icon">🌈</div>
+                        <p>Color can affect mood, appetite, and even heart rate. For example, blue can lower blood pressure while red can increase it.</p>
+                    </div>
+                    <div class="color-meanings">
+                        <div class="color-meaning red">
+                            <div class="color-swatch"></div>
+                            <p><strong>Red:</strong> Energy, passion, danger (increases heart rate)</p>
+                        </div>
+                        <div class="color-meaning blue">
+                            <div class="color-swatch"></div>
+                            <p><strong>Blue:</strong> Trust, calm, professionalism (most universally liked)</p>
+                        </div>
+                        <div class="color-meaning green">
+                            <div class="color-swatch"></div>
+                            <p><strong>Green:</strong> Growth, health, environment (easiest on the eyes)</p>
+                        </div>
+                        <div class="color-meaning yellow">
+                            <div class="color-swatch"></div>
+                            <p><strong>Yellow:</strong> Happiness, optimism, caution (most visible color)</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="principle-demo">
+                    <div class="color-demo" id="colorDemo">
+                        <div class="color-palette">
+                            <div class="palette-color primary"></div>
+                            <div class="palette-color secondary"></div>
+                            <div class="palette-color accent"></div>
+                        </div>
+                        <div class="color-harmony">
+                            <div class="harmony-btn" data-harmony="analogous">Analogous</div>
+                            <div class="harmony-btn" data-harmony="complementary">Complementary</div>
+                            <div class="harmony-btn" data-harmony="triadic">Triadic</div>
+                            <div class="harmony-btn" data-harmony="monochromatic">Monochromatic</div>
+                        </div>
+                    </div>
+                    <button class="demo-btn" id="colorBtn">Generate Palette</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-decoration">
+            <div class="footer-wave"></div>
+        </div>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Design Principles</h4>
+                <p>Understanding these fundamental principles will improve your design work and help you create more effective visual communication.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Psychology Insights</h4>
+                <p>Each principle is rooted in human perception and cognition, making them universal tools for designers.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Interactive Learning</h4>
+                <p>Experiment with the interactive demos to see how these principles work in practice.</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 Design Principles & Psychology | Created with CSS & JavaScript</p>
+            <div class="footer-icons">
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+                <div class="footer-icon"></div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-square"></div>
+        <div class="floating-triangle"></div>
+    </div>
+
+    <script src="principles/main.js"></script>
+</body>
+</html>

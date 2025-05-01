@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anticipation: Animation Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Color System - Based on Color Psychology */
+        :root {
+            /* Light Mode Colors */
+            --primary-light: #FF6B6B; /* Warm red for energy and attention */
+            --secondary-light: #4ECDC4; /* Teal for balance and creativity */
+            --accent-light: #FFE66D; /* Yellow for optimism and focus */
+            --bg-light: #F7FFF7; /* Very light green for calmness */
+            --text-light: #292F36; /* Dark gray-blue for readability */
+            --card-light: #FFFFFF; /* Pure white for clarity */
+            --border-light: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-light: rgba(41, 47, 54, 0.1); /* Text color with opacity */
+            
+            /* Dark Mode Colors */
+            --primary-dark: #FF9E9E; /* Softer red for dark mode */
+            --secondary-dark: #6ED3CF; /* Brighter teal for contrast */
+            --accent-dark: #FFEE93; /* Softer yellow */
+            --bg-dark: #1A1A2E; /* Deep navy for reduced eye strain */
+            --text-dark: #E6E6E6; /* Light gray for readability */
+            --card-dark: #16213E; /* Darker blue for cards */
+            --border-dark: #2D3748; /* Dark gray border */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Darker shadow */
+            
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        html.dark h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+        }
+
+        html.dark h2::after {
+            background: var(--secondary-dark);
+        }
+
+        p {
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Demo Container */
+        .demo-container {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-light) 100%);
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            position: relative;
+            overflow: hidden;
+            margin: var(--space-xl) 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        html.dark .demo-container {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-dark) 100%);
+        }
+
+        /* Character with Anticipation */
+        .character {
+            width: 60px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, var(--accent-light), var(--primary-light));
+            border-radius: 30px 30px 8px 8px;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(255, 230, 109, 0.7),
+                0 0 40px rgba(255, 230, 109, 0.4);
+            animation: anticipateJump 4s infinite cubic-bezier(0.28, 0.84, 0.42, 1);
+            transform-origin: bottom center;
+            will-change: transform;
+        }
+
+        html.dark .character {
+            background: radial-gradient(circle at 30% 30%, var(--accent-dark), var(--primary-dark));
+            box-shadow: 
+                0 0 20px rgba(255, 238, 147, 0.7),
+                0 0 40px rgba(255, 238, 147, 0.4);
+        }
+
+        /* Enhanced Anticipation Animation */
+        @keyframes anticipateJump {
+            0% { transform: translateY(0) scaleY(1); } /* Start at base */
+            15% { transform: translateY(10px) scaleY(0.95); } /* Slight settling */
+            25% { transform: translateY(-20px) scaleY(0.8) scaleX(1.1); } /* Anticipation (squash & subtle movement opposite direction) */
+            35% { transform: translateY(-25px) scaleY(0.9) scaleX(1.05); } /* Hold/Transition out of anticipation */
+            50% { transform: translateY(-180px) scaleY(1) scaleX(1); } /* Peak of jump */
+            65% { transform: translateY(-20px) scaleY(1.1) scaleX(0.9); } /* Landing (slight stretch) */
+            75% { transform: translateY(5px) scaleY(0.95) scaleX(1.02); } /* Overshoot */
+            100% { transform: translateY(0) scaleY(1) scaleX(1); } /* Settle back to base */
+        }
+
+        /* Shadow Effect */
+        .character::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            filter: blur(5px);
+            animation: shadowPulse 4s infinite cubic-bezier(0.28, 0.84, 0.42, 1);
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% {
+                width: 70px;
+                height: 10px;
+                opacity: 0.2;
+            }
+            25% {
+                width: 80px;
+                height: 15px;
+                opacity: 0.3;
+            }
+            50% {
+                width: 50px;
+                height: 5px;
+                opacity: 0.1;
+            }
+            75% {
+                width: 80px;
+                height: 15px;
+                opacity: 0.3;
+            }
+        }
+
+        /* Ground Line */
+        .demo-container::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
+            opacity: 0.3;
+        }
+
+        html.dark .demo-container::before {
+            background: linear-gradient(90deg, transparent, var(--text-dark), transparent);
+        }
+
+        /* List Items with Icons */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            transition: background-color var(--transition-base);
+        }
+
+        .list-item:hover {
+            background-color: rgba(78, 205, 196, 0.1);
+        }
+
+        html.dark .list-item:hover {
+            background-color: rgba(110, 211, 207, 0.1);
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background-color: var(--secondary-light);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xs);
+        }
+
+        html.dark .list-icon {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Comparison Cards */
+        .comparison-card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 5px 15px var(--shadow-light);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .comparison-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 5px 15px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce);
+        }
+
+        html.dark #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        html.dark #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color var(--transition-base);
+        }
+
+        html.dark #theme-toggle svg {
+            color: var(--text-dark);
+        }
+
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        html.dark .sun-icon {
+            display: none;
+        }
+
+        html.dark .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Elements */
+        .anticipation-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        html.dark .anticipation-vector {
+            background-color: var(--primary-dark);
+        }
+
+        .action-vector {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--secondary-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        html.dark .action-vector {
+            background-color: var(--secondary-dark);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .demo-container {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility Focus States */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--secondary-light);
+            outline-offset: 2px;
+        }
+
+        html.dark button:focus-visible, html.dark a:focus-visible {
+            outline-color: var(--secondary-dark);
+        }
+
+        /* Material Icons */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <!-- Decorative Background Elements -->
+    <div class="anticipation-vector" style="top: 10%; left: 10%;"></div>
+    <div class="action-vector" style="top: 30%; right: 15%;"></div>
+    <div class="anticipation-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="action-vector" style="bottom: 10%; left: 15%;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center py-12 reveal">
+                <h1>Anticipation</h1>
+                <p class="text-xl mt-4">The Principle That Prepares Your Audience for Action</p>
+                
+                <!-- Animated Character -->
+                <div class="demo-container mt-8 mb-12 reveal">
+                    <div class="character"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What is Anticipation Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>What is Anticipation?</h2>
+                <p>
+                    Anticipation is a small preparatory movement that occurs <em>before</em> a major action. Its purpose is to telegraph to the audience that something is about to happen, making the main action more impactful and easier to follow.
+                </p>
+                <p>
+                    Often, the anticipation movement is in the opposite direction of the main action. For example, a character might crouch down (anticipation) before jumping up (main action), or pull their arm back (anticipation) before throwing a punch (main action). It's a crucial element for adding realism and power to animated movements.
+                </p>
+                
+                <!-- Visual Explanation -->
+                <div class="flex flex-wrap gap-6 mt-8">
+                    <div class="flex-1 min-w-[200px] reveal" style="transition-delay: 0.1s;">
+                        <div class="text-center mb-4">
+                            <span class="material-symbols-rounded text-5xl mb-2" style="color: var(--primary-light);">compress</span>
+                            <p class="font-medium">Preparation</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-[200px] reveal" style="transition-delay: 0.2s;">
+                        <div class="text-center mb-4">
+                            <span class="material-symbols-rounded text-5xl mb-2" style="color: var(--primary-light);">pause</span>
+                            <p class="font-medium">Brief Pause</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-[200px] reveal" style="transition-delay: 0.3s;">
+                        <div class="text-center mb-4">
+                            <span class="material-symbols-rounded text-5xl mb-2" style="color: var(--primary-light);">rocket_launch</span>
+                            <p class="font-medium">Main Action</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstration Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>See It in Action</h2>
+                <p>Watch how anticipation prepares the viewer for the character's jump:</p>
+                
+                <div class="demo-container">
+                    <div class="character"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="comparison-card reveal" style="transition-delay: 0.1s;">
+                        <h3 class="font-bold mb-4 text-center">Key Uses</h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">sports_martial_arts</span>
+                                </div>
+                                <p>Preparing for jumps, throws, or large movements</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">surprise</span>
+                                </div>
+                                <p>Building tension before a surprise action</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">visibility</span>
+                                </div>
+                                <p>Subtle cues like eye movement before speaking</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold mb-4 text-center">Implementation Tips</h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">timer</span>
+                                </div>
+                                <p>The duration and intensity vary with the main action</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">swap_horiz</span>
+                                </div>
+                                <p>Often moves in the opposite direction of the main action</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon">
+                                    <span class="material-symbols-rounded">tune</span>
+                                </div>
+                                <p>Can be subtle or broad depending on the character and action</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Psychology Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>The Psychology Behind Anticipation</h2>
+                <p>
+                    Anticipation works because it mirrors our everyday experience. In the real world, physical actions require preparation - a baseball pitcher winds up, a dancer prepares to leap, even blinking involves a slight closing before opening. Our brains are hardwired to recognize these preparatory cues.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">psychology</span>
+                            <h3 class="text-xl font-semibold">Cognitive Preparation</h3>
+                        </div>
+                        <p>Gives the viewer's brain time to process what's about to happen, making the action more understandable.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">momentum</span>
+                            <h3 class="text-xl font-semibold">Physical Realism</h3>
+                        </div>
+                        <p>Mimics real-world physics where actions require preparatory movements.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">emoji_events</span>
+                            <h3 class="text-xl font-semibold">Emotional Impact</h3>
+                        </div>
+                        <p>Builds tension and makes the payoff action more satisfying.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Examples in Animation</h2>
+                <p>Anticipation is used everywhere in animation, from classic cartoons to modern UI design:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">directions_run</span>
+                            <h3 class="text-xl font-semibold">Character Jumps</h3>
+                        </div>
+                        <p>A character crouches down before leaping upward, making the jump more powerful.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">sports_baseball</span>
+                            <h3 class="text-xl font-semibold">Throwing</h3>
+                        </div>
+                        <p>The arm pulls back before throwing forward, increasing the sense of power.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--primary-light);">touch_app</span>
+                            <h3 class="text-xl font-semibold">UI Interactions</h3>
+                        </div>
+                        <p>Buttons may slightly shrink before expanding when clicked, making the interaction feel more tactile.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">info</span> About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Interactive Character - Pause animation on hover
+        const character = document.querySelector('.character');
+        character.addEventListener('mouseenter', () => {
+            character.style.animationPlayState = 'paused';
+        });
+        character.addEventListener('mouseleave', () => {
+            character.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>

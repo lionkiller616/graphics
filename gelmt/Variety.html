@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variety: A Design Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Mode - Variety Theme (using a mix of colors) */
+            --bg-color-light: #f3e5f5; /* Light Purple */
+            --text-color-light: #4a148c; /* Dark Purple */
+            --card-bg-light: #ffffff;
+            --card-text-light: #4a148c;
+            --section-bg-light: #f3e5f5;
+            --section-text-light: #4a148c;
+
+            /* Variety Demo Colors (Mix) */
+            --variety-element-color-1-light: #e57373; /* Red */
+            --variety-element-color-2-light: #64b5f6; /* Blue */
+            --variety-element-color-3-light: #81c784; /* Green */
+            --variety-element-color-4-light: #ffb74d; /* Orange */
+            --variety-element-color-5-light: #ba68c8; /* Purple */
+            --variety-demo-bg-light: #e1bee7; /* Lighter Purple */
+
+            /* Wrong Variety Colors (Monochromatic/Grey) */
+            --variety-wrong-bg-light: #eeeeee; /* Very Light Grey */
+            --variety-wrong-element-light: #9e9e9e; /* Medium Grey */
+            --variety-wrong-border-light: #616161; /* Dark Grey */
+
+
+            --blurred-bg-light: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjNlNWY1IiAvPiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZTFiZWU3IiAvPiAgICA8L2xpbmVhckdyYradpbnQ+ICAgIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSJ1cmwoI2dyYWQxKSIgLz48L3N2Zz4='); /* Light purple gradient */
+        }
+
+        /* Dark Mode - Variety Theme */
+        .dark-mode {
+            --bg-color: #4a148c; /* Dark Purple */
+            --text-color: #f3e5f5; /* Light Purple */
+            --card-bg: #6a1b9a; /* Darker Purple */
+            --card-text: #f3e5f5;
+            --section-bg: #4a148c;
+            --section-text: #f3e5f5;
+
+            /* Variety Demo Colors (Mix) */
+            --variety-element-color-1: #ff8a65; /* Light Red */
+            --variety-element-color-2: #80cbc4; /* Light Teal */
+            --variety-element-color-3: #a5d6a7; /* Light Green */
+            --variety-element-color-4: #ffcc80; /* Light Orange */
+            --variety-element-color-5: #e1bee7; /* Very Light Purple */
+            --variety-demo-bg: #311b92; /* Dark Indigo */
+
+             /* Wrong Variety Colors (Monochromatic/Grey) */
+            --variety-wrong-bg: #424242; /* Dark Grey */
+            --variety-wrong-element: #757575; /* Medium Grey */
+            --variety-wrong-border: #bdbdbd; /* Light Grey */
+
+
+             --blurred-bg-dark: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC4yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDgwMCA2MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4gICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0YTE0OGMiIC8+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM2YTFkOWEiIC8+Pj4KICAgIDwvbGluZWFyR3JhZGllbnQ+ICAgIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSJ1cmwoI2dyYWQyKSIgLz48L3N2Zz4='); /* Dark purple gradient */
+        }
+
+        /* Apply Theme Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            position: relative; /* Needed for blurred background */
+        }
+
+        /* Blurred Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--blurred-bg, var(--blurred-bg-light));
+            background-size: cover;
+            filter: blur(20px); /* Apply blur effect */
+            z-index: -1; /* Place behind content */
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        section {
+             background-color: var(--section-bg, var(--card-bg-light));
+             color: var(--section-text, var(--card-text-light));
+             transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .color-card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Apply animations */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+         .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            transition: fill 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle svg {
+            fill: #f0f0f0;
+        }
+
+        /* CSS for Variety Demonstrations */
+        .variety-demo-container {
+            width: 100%;
+            min-height: 200px; /* Min height for rows */
+            border: 2px solid var(--text-color, var(--text-color-light));
+            border-radius: 8px;
+            margin-top: 20px;
+            overflow: hidden;
+            background-color: var(--variety-demo-bg, var(--variety-demo-bg-light));
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* Space between elements */
+            padding: 20px;
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+        }
+
+        .variety-element {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+             transition: background-color 0.5s ease-in-out, border-radius 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out;
+        }
+
+        /* Different element styles for variety (Good) */
+        .variety-demo-container.good-variety .variety-element:nth-child(1) {
+            background-color: var(--variety-element-color-1, var(--variety-element-color-1-light));
+        }
+        .variety-demo-container.good-variety .variety-element:nth-child(2) {
+            background-color: var(--variety-element-color-2, var(--variety-element-color-2-light));
+            width: 60px;
+            height: 40px;
+        }
+        .variety-demo-container.good-variety .variety-element:nth-child(3) {
+            background-color: var(--variety-element-color-3, var(--variety-element-color-3-light));
+            border-radius: 50%; /* Circle */
+        }
+         .variety-demo-container.good-variety .variety-element:nth-child(4) {
+            background-color: var(--variety-element-color-4, var(--variety-element-color-4-light));
+            width: 40px;
+            height: 60px;
+        }
+         .variety-demo-container.good-variety .variety-element:nth-child(5) {
+            background-color: var(--variety-element-color-5, var(--variety-element-color-5-light));
+            width: 70px;
+            height: 70px;
+            border-radius: 50%; /* Larger Circle */
+        }
+         .variety-demo-container.good-variety .variety-element:nth-child(6) {
+            background-color: var(--variety-element-color-1, var(--variety-element-color-1-light));
+            width: 50px;
+            height: 50px;
+         }
+         .variety-demo-container.good-variety .variety-element:nth-child(7) {
+            background-color: var(--variety-element-color-2, var(--variety-element-color-2-light));
+            width: 40px;
+            height: 40px;
+             border-radius: 50%; /* Smaller Circle */
+         }
+          .variety-demo-container.good-variety .variety-element:nth-child(8) {
+            background-color: var(--variety-element-color-3, var(--variety-element-color-3-light));
+            width: 60px;
+            height: 60px;
+         }
+           .variety-demo-container.good-variety .variety-element:nth-child(9) {
+            background-color: var(--variety-element-color-4, var(--variety-element-color-4-light));
+            width: 50px;
+            height: 50px;
+             border-radius: 50%; /* Circle */
+         }
+          .variety-demo-container.good-variety .variety-element:nth-child(10) {
+            background-color: var(--variety-element-color-5, var(--variety-element-color-5-light));
+            width: 40px;
+            height: 40px;
+         }
+
+         /* Lack of Variety Styles (Wrong) */
+         .variety-demo-container.lack-of-variety {
+             background-color: var(--variety-wrong-bg, var(--variety-wrong-bg-light));
+             border-color: var(--variety-wrong-border, var(--variety-wrong-border-light));
+             gap: 10px; /* Slightly smaller gap */
+             padding: 15px;
+         }
+
+         .variety-demo-container.lack-of-variety .variety-element {
+             width: 50px;
+             height: 50px;
+             border-radius: 8px; /* Consistent shape */
+             background-color: var(--variety-wrong-element, var(--variety-wrong-element-light)); /* Consistent color */
+             box-shadow: none; /* Less visual interest */
+         }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="p-8">
+
+    <button id="themeToggle" class="theme-toggle">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1s1-.45 1-1V3c0-.55-.45-1-1-1zm8.59 2.91l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM4.7 5.61l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM21 11h-1c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm-18 0H3c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm15.3 5.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM5.61 19.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>
+         <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c.4-.4.9-.6 1.4-.6.5 0 1 .2 1.4.6.4.4.6.9.6 1.4 0 .5-.2 1-.6 1.4-.4.4-.9.6-1.4.6-.5 0-1-.2-1.4-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.4zm-.7 10.4c-3.3 0-6-2.7-6-6s2.7-6 6-6c.6 0 1.1.1 1.6.3-.4.8-.6 1.7-.6 2.7 0 3.3 2.7 6 6 6.1 1 .1 1.9-.2 2.7-.6.2.5.3 1 .3 1.6 0 3.3-2.7 6-6 6z"/></svg>
+    </button>
+
+
+    <header class="text-center my-12 animate-fadeIn">
+        <h1 class="text-5xl font-bold mb-4">Embracing Variety</h1>
+        <p class="text-xl">Adding Interest and Breaking Monotony in Design</p>
+    </header>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInLeft">
+        <h2 class="text-3xl font-semibold mb-6">What is Variety?</h2>
+        <p class="leading-relaxed">
+            Variety in graphic design is the use of different elements to create visual interest and avoid monotony. While repetition creates consistency, variety adds dynamism and prevents a design from becoming boring or predictable. It involves incorporating differences in size, shape, color, texture, typefaces, and other visual attributes. Variety, when used effectively alongside unity, adds richness and energy to a composition.
+        </p>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInRight">
+        <h2 class="text-3xl font-semibold mb-6">Using Variety Effectively</h2>
+        <p class="leading-relaxed mb-6">
+            Variety should be intentional and contribute to the overall design goals, not just randomness:
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Preventing Monotony:</strong> Introducing different elements keeps the design engaging and prevents the viewer's eye from getting bored.</li>
+            <li><strong>Creating Emphasis:</strong> A unique element among similar ones immediately stands out (this links back to the principle of Emphasis).</li>
+            <li><strong>Adding Visual Interest:</strong> Different textures, patterns, or shapes can make a design more visually appealing and tactile.</li>
+            <li><strong>Supporting Hierarchy:</strong> Varying size, color, or typeface helps differentiate elements and establish a clear visual hierarchy.</li>
+            <li><strong>Expressing Personality:</strong> The type and amount of variety used can communicate the design's mood or brand personality (e.g., playful, serious, dynamic).</li>
+        </ul>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Demonstrating Variety</h2>
+        <p class="leading-relaxed mb-8">
+            Let's visualize how incorporating differences in elements adds interest to a composition, and what happens when variety is lacking.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Variety in Elements (Good)</h3>
+                <div class="variety-demo-container good-variety">
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                     <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                </div>
+                <p class="text-sm text-center mt-2">
+                    Differences in size, shape, and color add visual interest and prevent the design from being monotonous.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Lack of Variety (Wrong)</h3>
+                <div class="variety-demo-container lack-of-variety">
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                     <div class="variety-element"></div>
+                    <div class="variety-element"></div>
+                </div>
+                 <p class="text-sm text-center mt-2">
+                    Repeating identical elements without variation can make a design feel boring and unengaging.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+     <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Variety in UI/UX and Psychology</h2>
+        <p class="leading-relaxed mb-8">
+            Thoughtful use of variety in UI/UX design keeps users engaged and helps differentiate content.
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Maintaining Engagement:</strong> A design with appropriate variety is more visually stimulating and holds the user's attention longer than a monotonous one.</li>
+            <li><strong>Differentiating Content:</strong> Varying the presentation of different types of content (e.g., articles, product listings, user profiles) helps users quickly identify what they are looking at.</li>
+            <li><strong>Highlighting Key Information:</strong> Using variety (like a different color or size) is a direct way to emphasize important elements or calls to action.</li>
+            <li><strong>Creating a Brand Personality:</strong> The level and style of variety used can contribute to the overall personality and tone of the interface.</li>
+            <li><strong>Avoiding Visual Fatigue:</strong> Too much repetition can lead to visual fatigue; variety provides visual breaks and keeps the experience fresh.</li>
+        </ul>
+    </section>
+
+    <footer class="text-center my-12 text-sm animate-fadeIn">
+        <p>&copy; 2023 Design Principles Explained</p>
+    </footer>
+
+    <script>
+        // JavaScript for animations and theme toggle
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Optional: Add intersection observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible'); // Add a class to trigger CSS animation
+                        entry.target.classList.remove('animate-slideInLeft', 'animate-slideInRight', 'animate-fadeIn'); // Remove initial animation classes
+                         // Re-add the animation class to trigger it on scroll
+                        if (entry.target.classList.contains('initial-animate-slideInLeft')) {
+                             entry.target.classList.add('animate-slideInLeft');
+                        } else if (entry.target.classList.contains('initial-animate-slideInRight')) {
+                             entry.target.classList.add('animate-slideInRight');
+                        } else if (entry.target.classList.contains('initial-animate-fadeIn')) {
+                             entry.target.classList.add('animate-fadeIn');
+                        }
+                        entry.target.style.opacity = 1; // Ensure visibility after animation
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            // Add initial animation classes and observe sections
+            document.querySelectorAll('section, header, footer').forEach(section => {
+                if (section.classList.contains('animate-slideInLeft')) {
+                    section.classList.add('initial-animate-slideInLeft'); // Mark for re-adding
+                    section.classList.remove('animate-slideInLeft'); // Remove to wait for scroll
+                } else if (section.classList.contains('animate-slideInRight')) {
+                     section.classList.add('initial-animate-slideInRight');
+                     section.classList.remove('animate-slideInRight');
+                } else if (section.classList.contains('animate-fadeIn')) {
+                     section.classList.add('initial-animate-fadeIn');
+                     section.classList.remove('animate-fadeIn');
+                }
+                section.style.opacity = 0; // Hide initially
+                observer.observe(section);
+            });
+
+             // Add a class for visible state to trigger the animation
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                .visible {
+                    opacity: 1 !important;
+                }
+            `, styleSheet.cssRules.length);
+
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+
+            // Check for saved theme in local storage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                 // Default to light mode if no theme is saved or saved theme is not dark
+                body.classList.remove('dark-mode');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+
+                // Toggle icons
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+
+                // Save theme preference to local storage
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

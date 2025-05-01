@@ -1,0 +1,84 @@
+/* Duration examples */
+.duration-example .box {
+    transition: transform 0.3s ease-out;
+}
+
+.duration-example:hover .box {
+    transform: translateX(100px);
+}
+
+.duration-fast .box {
+    transition-duration: 300ms;
+}
+
+.duration-medium .box {
+    transition-duration: 600ms;
+}
+
+.duration-slow .box {
+    transition-duration: 900ms;
+}
+
+/* Staggered delays */
+.staggered-example .bar {
+    animation: grow 1s ease-in-out infinite alternate;
+}
+
+.staggered-example .bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.staggered-example .bar:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.staggered-example .bar:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.staggered-example .bar:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.staggered-example .bar:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+@keyframes grow {
+    from { height: 20%; }
+    to { height: 100%; }
+}
+
+/* Iteration examples */
+.iteration-example {
+    animation: bounce 1s ease infinite;
+}
+
+.iteration-normal {
+    animation-direction: normal;
+}
+
+.iteration-alternate {
+    animation-direction: alternate;
+}
+
+.iteration-reverse {
+    animation-direction: reverse;
+}
+
+.iteration-once {
+    animation-iteration-count: 1;
+}
+
+.iteration-three {
+    animation-iteration-count: 3;
+}
+
+.iteration-infinite {
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-30px); }
+}

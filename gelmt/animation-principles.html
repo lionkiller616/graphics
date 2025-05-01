@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12 Principles of Animation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Define CSS variables for colors and transitions */
+        :root {
+            /* Light Mode Colors - Enhanced Contrast */
+            --primary-light: #6A1B9A; /* Deeper Purple */
+            --secondary-light: #8E24AA; /* Medium Purple */
+            --accent-light: #F57F17; /* Stronger Orange */
+            --bg-light: #F4F6F8; /* Very Light Blue-Gray */
+            --text-light: #2C3E50; /* Dark Blue-Gray for text */
+            --card-light: #FFFFFF; /* White */
+            --border-light: #E0E0E0; /* Light Gray Border */
+            --shadow-light: rgba(44, 62, 80, 0.15); /* Shadow based on text color */
+
+            /* Dark Mode Colors - Refined */
+            --primary-dark: #AB47BC; /* Lighter Purple */
+            --secondary-dark: #CE93D8; /* Very Light Purple */
+            --accent-dark: #FFA726; /* Brighter Orange */
+            --bg-dark: #1F2937; /* Dark Blue-Gray Background */
+            --text-dark: #E5E7EB; /* Light Gray Text */
+            --card-dark: #374151; /* Darker Blue-Gray Card Background */
+            --border-dark: #4B5563; /* Medium Gray Border */
+            --shadow-dark: rgba(0, 0, 0, 0.5); /* Stronger Dark Shadow */
+
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+
+        /* Apply dark mode variables when the dark-mode class is active */
+        .dark-mode {
+            --primary: var(--primary-dark);
+            --secondary: var(--secondary-dark);
+            --accent: var(--accent-dark);
+            --bg-color: var(--bg-dark);
+            --text-color: var(--text-dark);
+            --card-bg: var(--card-dark);
+            --card-text: var(--text-dark); /* Card text color in dark mode */
+            --section-bg: var(--bg-dark); /* Section background in dark mode */
+            --section-text: var(--text-dark); /* Section text color in dark mode */
+            --border-color: var(--border-dark);
+            --shadow-color: var(--shadow-dark);
+        }
+
+        /* Base body styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light); /* Use text-light variable for body text */
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh; /* Ensure body takes at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Dark mode body styles */
+        .dark-mode body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark); /* Use text-dark variable for body text */
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-light); /* Default text color for headings in light mode */
+            transition: color var(--transition-slow);
+        }
+
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 {
+             color: var(--text-dark); /* Default text color for headings in dark mode */
+        }
+
+
+        h1 {
+            font-size: 3rem;
+            line-height: 1.1;
+            /* Gradient text effect */
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; /* Make text color transparent to show gradient */
+            display: inline-block; /* Needed for gradient clip */
+        }
+
+        /* Dark mode h1 gradient */
+        .dark-mode h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.25rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Underline effect for h2 */
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%; /* Center the underline */
+            transform: translateX(-50%); /* Adjust for centering */
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+            transition: background var(--transition-slow);
+        }
+
+        /* Dark mode h2 underline color */
+        .dark-mode h2::after {
+            background: var(--secondary-dark);
+        }
+
+        /* Cards */
+        .principle-card {
+            background-color: var(--card-light);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-slow), border-color var(--transition-slow);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+            display: flex; /* Use flexbox for internal alignment */
+            flex-direction: column;
+            align-items: center; /* Center content horizontally */
+            text-align: center; /* Center text within the card */
+        }
+
+        /* Dark mode card styles */
+        .dark-mode .principle-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        /* Card hover effect */
+        .principle-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow on hover */
+        }
+
+        /* Top border gradient for cards */
+        .principle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            transition: background var(--transition-slow);
+        }
+
+        /* Dark mode top border gradient for cards */
+        .dark-mode .principle-card::before {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+        }
+
+        /* Theme Toggle Button */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce), background-color var(--transition-slow), border-color var(--transition-slow), box-shadow var(--transition-slow);
+        }
+
+        /* Dark mode theme toggle styles */
+        .dark-mode #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        /* Theme toggle hover effect */
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        /* Dark mode theme toggle hover effect */
+        .dark-mode #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        /* Theme toggle icon styles */
+        #theme-toggle svg, #theme-toggle .material-symbols-rounded {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light); /* Icon color in light mode */
+            transition: color var(--transition-base);
+        }
+
+        /* Dark mode theme toggle icon color */
+        .dark-mode #theme-toggle svg, .dark-mode #theme-toggle .material-symbols-rounded {
+            color: var(--text-dark); /* Icon color in dark mode */
+        }
+
+        /* Show/hide sun/moon icons based on theme */
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        .dark-mode .sun-icon {
+            display: none;
+        }
+
+        .dark-mode .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Background Elements */
+        .animation-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--secondary-light); /* Use secondary color for vectors */
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+            transition: background-color var(--transition-slow);
+        }
+
+        /* Dark mode decorative elements color */
+        .dark-mode .animation-vector {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Keyframes for floating animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Principle Icons Container */
+        .principle-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            /* Added mx-auto to center the icon container within the card */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Specific Principle Animations - Ensure colors have some contrast */
+        .squash-stretch {
+            width: 60px;
+            height: 60px;
+            background-color: #EF476F; /* Pink */
+            border-radius: 50%;
+            animation: squashStretch 2s infinite ease-in-out;
+        }
+
+        @keyframes squashStretch {
+            0%, 100% { transform: scale(1, 1); }
+            25% { transform: scale(1.2, 0.8); }
+            50% { transform: scale(0.8, 1.2); }
+            75% { transform: scale(1.1, 0.9); }
+        }
+
+        .anticipation-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #FFD166; /* Light Orange/Yellow */
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* Triangle shape */
+            animation: anticipation 2s infinite ease-in-out;
+        }
+
+        @keyframes anticipation {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            30% { transform: translateY(-20px) rotate(-10deg); }
+            60% { transform: translateY(0) rotate(0); }
+        }
+
+        .staging-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #06D6A0; /* Teal */
+            position: relative;
+            border-radius: 8px; /* Added slight border-radius */
+        }
+
+        .staging-icon::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: white; /* White dots */
+            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+            box-shadow: 30px 0 white; /* Second dot */
+        }
+
+        .staging-icon::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 8px;
+            background-color: white; /* White rectangle */
+            border-radius: 4px;
+            bottom: 15px;
+            left: 15px;
+        }
+
+        .straight-pose-icon {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end; /* Align bars to the bottom */
+            height: 60px; /* Give container a height */
+        }
+
+        .straight-pose-icon div {
+            width: 12px;
+            background-color: #118AB2; /* Blue */
+            border-radius: 4px 4px 0 0; /* Rounded top corners */
+        }
+
+        .straight-pose-icon div:nth-child(1) {
+            height: 40px;
+            animation: pose1 2s infinite ease-in-out;
+        }
+
+        .straight-pose-icon div:nth-child(2) {
+            height: 60px;
+            animation: pose2 2s infinite ease-in-out;
+        }
+
+        .straight-pose-icon div:nth-child(3) {
+            height: 30px;
+            animation: pose3 2s infinite ease-in-out;
+        }
+
+        @keyframes pose1 {
+            0%, 100% { height: 40px; }
+            50% { height: 60px; }
+        }
+
+        @keyframes pose2 {
+            0%, 100% { height: 60px; }
+            50% { height: 30px; }
+        }
+
+        @keyframes pose3 {
+            0%, 100% { height: 30px; }
+            50% { height: 50px; }
+        }
+
+        .follow-through-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #073B4C; /* Dark Blue */
+            position: relative;
+            border-radius: 50%; /* Circle shape */
+            overflow: hidden; /* Hide pendulum base */
+        }
+
+        .follow-through-icon::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 40px;
+            background-color: #06D6A0; /* Teal pendulum */
+            left: 50%; /* Center pendulum horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
+            top: 10px;
+            transform-origin: top center;
+            animation: pendulum 2s infinite ease-in-out;
+        }
+
+        @keyframes pendulum {
+            0%, 100% { transform: translateX(-50%) rotate(-30deg); } /* Adjusted for centering */
+            50% { transform: translateX(-50%) rotate(30deg); } /* Adjusted for centering */
+        }
+
+        .slow-in-out-icon {
+            width: 60px;
+            height: 8px;
+            background-color: #7209B7; /* Purple */
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 26px; /* Vertically center the track */
+        }
+
+        .slow-in-out-icon::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #F72585; /* Pink circle */
+            border-radius: 50%;
+            top: -2px;
+            animation: slowInOut 3s infinite ease-in-out;
+        }
+
+        @keyframes slowInOut {
+            0%, 100% { left: 0; transform: scale(0.8); }
+            30%, 70% { transform: scale(1.2); }
+            50% { left: calc(100% - 12px); transform: scale(1.2); } /* Move to the right edge */
+        }
+
+        .arcs-icon {
+            width: 60px;
+            height: 60px;
+            position: relative;
+            display: flex; /* Use flexbox to center the spinner */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arcs-icon::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 4px solid #4CC9F0; /* Light Blue */
+            border-radius: 50%;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            animation: spin 3s infinite linear;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .secondary-action-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #F72585; /* Pink */
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden; /* Hide the secondary action element base */
+        }
+
+        .secondary-action-icon::before {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 30px;
+            background-color: #B5179E; /* Darker Pink/Purple */
+            top: -10px;
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
+            animation: secondaryAction 1.5s infinite ease-in-out;
+        }
+
+        @keyframes secondaryAction {
+            0%, 100% { transform: translateX(-50%) translateY(0); } /* Adjusted for centering */
+            50% { transform: translateX(-50%) translateY(10px); } /* Adjusted for centering */
+        }
+
+        .timing-icon {
+            display: flex;
+            gap: 6px;
+            align-items: flex-end; /* Align bars to the bottom */
+            height: 60px; /* Give container a height */
+        }
+
+        .timing-icon div {
+            width: 8px;
+            background-color: #FF9E00; /* Orange */
+            border-radius: 4px 4px 0 0; /* Rounded top corners */
+        }
+
+        .timing-icon div:nth-child(1) {
+            height: 30px;
+            animation: timing1 1.5s infinite ease-in-out;
+        }
+
+        .timing-icon div:nth-child(2) {
+            height: 50px;
+            animation: timing2 1.5s infinite ease-in-out;
+        }
+
+        .timing-icon div:nth-child(3) {
+            height: 20px;
+            animation: timing3 1.5s infinite ease-in-out;
+        }
+
+        @keyframes timing1 {
+            0%, 100% { height: 30px; }
+            50% { height: 50px; }
+        }
+
+        @keyframes timing2 {
+            0%, 100% { height: 50px; }
+            50% { height: 20px; }
+        }
+
+        @keyframes timing3 {
+            0%, 100% { height: 20px; }
+            50% { height: 40px; }
+        }
+
+        .exaggeration-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #FF9E00; /* Orange */
+            border-radius: 50%;
+            animation: exaggeration 1s infinite alternate ease-in-out;
+        }
+
+        @keyframes exaggeration {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.3); }
+        }
+
+        .solid-drawing-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #4CC9F0; /* Light Blue */
+            transform: perspective(300px) rotateX(20deg) rotateY(20deg); /* 3D perspective */
+            box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+            border-radius: 8px; /* Added slight border-radius */
+        }
+
+        .appeal-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #F72585; /* Pink */
+            border-radius: 50% 50% 10px 10px; /* Rounded top, flat bottom */
+            position: relative;
+            overflow: hidden; /* Hide overflowing content */
+        }
+
+        .appeal-icon::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: white; /* White eyes */
+            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+            box-shadow: 20px 0 white; /* Second eye */
+        }
+
+        .appeal-icon::after {
+            content: '˶ᵔ ᵕ ᵔ˶'; /* Cute face emoji */
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 12px;
+            white-space: nowrap; /* Prevent wrapping */
+        }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            .principle-card {
+                padding: 1rem;
+            }
+
+            .principle-icon {
+                width: 60px; /* Smaller icons on mobile */
+                height: 60px;
+                margin-bottom: 1rem;
+            }
+             /* Adjust specific icon sizes if needed for smaller container */
+            .squash-stretch, .anticipation-icon, .staging-icon,
+            .follow-through-icon, .slow-in-out-icon, .arcs-icon,
+            .secondary-action-icon, .exaggeration-icon, .solid-drawing-icon,
+            .appeal-icon {
+                width: 40px;
+                height: 40px;
+            }
+             .straight-pose-icon {
+                height: 40px;
+                gap: 4px;
+             }
+             .straight-pose-icon div {
+                width: 8px;
+             }
+             @keyframes pose1 { 0%, 100% { height: 25px; } 50% { height: 40px; } }
+             @keyframes pose2 { 0%, 100% { height: 40px; } 50% { height: 20px; } }
+             @keyframes pose3 { 0%, 100% { height: 20px; } 50% { height: 30px; } }
+
+             .follow-through-icon::before {
+                height: 25px;
+                width: 4px;
+                left: 50%;
+                transform: translateX(-50%);
+             }
+
+             .slow-in-out-icon {
+                width: 40px;
+                margin-top: 16px;
+             }
+             .slow-in-out-icon::before {
+                width: 8px;
+                height: 8px;
+             }
+             @keyframes slowInOut {
+                0%, 100% { left: 0; transform: scale(0.8); }
+                30%, 70% { transform: scale(1.2); }
+                50% { left: calc(100% - 8px); transform: scale(1.2); }
+             }
+
+             .arcs-icon::before {
+                width: 30px;
+                height: 30px;
+                border-width: 3px;
+             }
+
+             .secondary-action-icon::before {
+                width: 4px;
+                height: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+             }
+             @keyframes secondaryAction {
+                0%, 100% { transform: translateX(-50%) translateY(0); }
+                50% { transform: translateX(-50%) translateY(8px); }
+             }
+
+             .timing-icon {
+                height: 40px;
+                gap: 4px;
+             }
+             .timing-icon div {
+                width: 6px;
+             }
+             @keyframes timing1 { 0%, 100% { height: 20px; } 50% { height: 35px; } }
+             @keyframes timing2 { 0%, 100% { height: 35px; } 50% { height: 15px; } }
+             @keyframes timing3 { 0%, 100% { height: 15px; } 50% { height: 25px; } }
+
+             .appeal-icon::before {
+                width: 8px;
+                height: 8px;
+                top: 10px;
+                left: 10px;
+                box-shadow: 15px 0 white;
+             }
+             .appeal-icon::after {
+                font-size: 10px;
+                bottom: 8px;
+             }
+
+        }
+
+        /* Ensure footer stays at the bottom */
+        body > .container {
+            flex-grow: 1;
+        }
+
+        /* Specific adjustments for text colors to ensure contrast */
+        .text-gray-700 {
+            color: var(--text-light); /* Use the light mode text color variable */
+        }
+
+        .dark-mode .text-gray-700 {
+             color: var(--text-dark); /* Use the dark mode text color variable */
+        }
+
+        /* Footer text color */
+        footer p, footer a {
+            color: var(--text-light); /* Default footer text color */
+        }
+
+        .dark-mode footer p, .dark-mode footer a {
+            color: var(--text-dark); /* Dark mode footer text color */
+        }
+
+
+    </style>
+</head>
+<body>
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <div class="animation-vector" style="top: 10%; left: 10%;"></div>
+    <div class="animation-vector" style="top: 30%; right: 15%;"></div>
+    <div class="animation-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="animation-vector" style="bottom: 10%; left: 15%;"></div>
+
+    <div class="container mx-auto px-4 py-12">
+        <header class="text-center mb-16 reveal">
+            <h1 class="mb-4">12 Principles of Animation</h1>
+            <p class="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">The fundamental concepts that bring drawings to life and create compelling motion</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-center mb-12 reveal">Explore the Principles</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <a href="squash-and-stretch.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="squash-stretch"></div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Squash and Stretch</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Giving weight and flexibility to objects</p>
+                </a>
+
+                <a href="anticipation.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="anticipation-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Anticipation</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Preparing the audience for action</p>
+                </a>
+
+                <a href="staging.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="staging-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Staging</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Directing audience attention</p>
+                </a>
+
+                <a href="straight-ahead-pose-to-pose.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="straight-pose-icon">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Straight Ahead & Pose to Pose</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Two approaches to animation</p>
+                </a>
+
+                <a href="follow-through-overlapping.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="follow-through-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Follow Through & Overlapping</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Creating natural movement</p>
+                </a>
+
+                <a href="slow-in-slow-out.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="slow-in-out-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Slow In & Slow Out</h3>
+                    <p class="text-gray-700 dark:text-gray-300">The physics of movement</p>
+                </a>
+
+                <a href="arc.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="arcs-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Arcs</h3>
+                    <p class="text-gray-700 dark:text-gray-300">The natural path of movement</p>
+                </a>
+
+                <a href="secondary-action.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="secondary-action-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Secondary Action</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Adding life to animation</p>
+                </a>
+
+                <a href="timing.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="timing-icon">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Timing</h3>
+                    <p class="text-gray-700 dark:text-gray-300">The soul of animation</p>
+                </a>
+
+                <a href="exaggeration.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="exaggeration-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Exaggeration</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Pushing reality for impact</p>
+                </a>
+
+                <a href="solid-drawing.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="solid-drawing-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Solid Drawing</h3>
+                    <p class="text-gray-700 dark:text-gray-300">Foundation of believable animation</p>
+                </a>
+
+                <a href="appeal.html" class="principle-card reveal">
+                    <div class="principle-icon">
+                        <div class="appeal-icon"></div>
+                    </div>
+                     <h3 class="text-2xl font-bold mb-2">Appeal</h3>
+                    <p class="text-gray-700 dark:text-gray-300">The magic of charismatic design</p>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4 text-gray-700 dark:text-gray-400">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle text-base">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle text-base">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle text-base">info</span> About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference on page load
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark-mode');
+        } else {
+            htmlElement.classList.remove('dark-mode');
+        }
+
+        // Add event listener to the theme toggle button
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark-mode');
+            // Save the current theme preference to local storage
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark-mode')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all elements with the 'reveal' class
+            const revealElements = document.querySelectorAll('.reveal');
+
+            // Create a new Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // If the element is intersecting the viewport
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active'); // Add the 'active' class to trigger animation
+                        observer.unobserve(entry.target); // Stop observing once revealed
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of the element is visible
+                rootMargin: '0px 0px -50px 0px' // Adjust the viewport margin
+            });
+
+            // Observe each reveal element
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+:root, [data-theme="light"] {
+    --background: var(--gray-50);
+    --foreground: var(--gray-900);
+    --muted: var(--gray-100);
+    --muted-foreground: var(--gray-500);
+    --popover: var(--gray-50);
+    --popover-foreground: var(--gray-900);
+    --card: white;
+    --card-foreground: var(--gray-900);
+    --border: var(--gray-200);
+    --input: var(--gray-200);
+    --ring: hsl(var(--primary-hue) 50% 50% / 0.2);
+    
+    color-scheme: light;
+  }
+  
+  [data-theme="light"] .dark-only {
+    display: none !important;
+  }

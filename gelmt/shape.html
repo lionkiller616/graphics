@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape: A Design Element</title>
+    <meta name="description" content="Learn how shapes—geometric, organic, abstract—drive visual design. Interactive demos included.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color-light: #ffd6a5;  /* Sunset */
+            --text-color-light: #212529;  /* Darker text for better contrast */
+            --card-bg-light: #ffffff;
+            --card-text-light: #212529;
+            --section-bg-light: #ffadad; /* Melon */
+            --section-text-light: #212529;
+            --demo-bg-light: #fff3e0;
+            --primary-color: #bf360c; /* Brown */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .dark-mode {
+            --bg-color: #1a202c;  /* Dark background */
+            --text-color: #f8f9fa;  /* Lighter text */
+            --card-bg: #2d3748;  /* Darker card background */
+            --card-text: #f8f9fa;
+            --section-bg: #4a5568; /* Darker section background */
+            --section-text: #f8f9fa;
+            --demo-bg: #2d3748;
+        }
+
+        .shape-demo {
+            height: 300px;
+            background-color: var(--demo-bg, var(--demo-bg-light));
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 20px;
+            flex-wrap: wrap;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .shape {
+            width: 80px;
+            height: 80px;
+            background-color: var(--text-color, var(--text-color-light));
+            margin: 1rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .shape:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .shape.circle {
+            border-radius: 50%;
+        }
+
+        .shape.triangle {
+            width: 0;
+            height: 0;
+            background-color: transparent;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 80px solid var(--text-color, var(--text-color-light));
+        }
+
+        .shape.oval {
+            width: 120px;
+            border-radius: 50%;
+        }
+
+        .shape.rectangle {
+            width: 120px;
+        }
+
+        .shape.hexagon {
+            width: 80px;
+            height: 46px;
+            background-color: transparent;
+            position: relative;
+        }
+
+        .shape.hexagon:before,
+        .shape.hexagon:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+        }
+
+        .shape.hexagon:before {
+            bottom: 100%;
+            border-bottom: 23px solid var(--text-color, var(--text-color-light));
+        }
+
+        .shape.hexagon:after {
+            top: 100%;
+            border-top: 23px solid var(--text-color, var(--text-color-light));
+        }
+
+        .card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            border-radius: 0.5rem;
+            padding: 1rem;
+            opacity: 0.8;
+        }
+
+        #theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem;
+            border-radius: 9999px; /* Make it a circle */
+            background-color: #e2e8f0; /* Light gray */
+            color: #1a202c;
+            cursor: pointer;
+            border: 2px solid #cbd5e0;
+            transition: all 0.3s ease; /* Smooth transition */
+            z-index: 10;
+            display: flex; /* Use flexbox for icon alignment */
+            align-items: center;
+            justify-content: center;
+            width: 48px; /* Fixed width and height for the circle */
+            height: 48px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Add shadow */
+        }
+
+        #theme-toggle:hover {
+            background-color: #cbd5e0; /* Slightly darker on hover */
+            transform: scale(1.1); /* Slightly larger on hover */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Increase shadow on hover */
+        }
+
+        #theme-toggle.dark {
+            background-color: #2d3748; /* Dark gray */
+            color: #f8f9fa;
+            border-color: #4a5568;
+        }
+
+        #theme-toggle.dark:hover {
+            background-color: #4a5568;
+            transform: scale(1.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #shape-color-picker {
+            margin: 1rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 640px) {
+            .shape-demo {
+                justify-content: center;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            body {
+                --bg-color-light: #fff;
+                --text-color-light: #000;
+                --card-bg-light: #fff;
+                --card-text-light: #000;
+                --section-bg-light: #f0f0f0;
+                --section-text-light: #000;
+                --demo-bg-light: #fff;
+                --primary-color: #000;
+            }
+            .dark-mode {
+                --bg-color: #000;
+                --text-color: #fff;
+                --card-bg: #222;
+                --card-text: #fff;
+                --section-bg: #333;
+                --section-text: #fff;
+                --demo-bg: #000;
+            }
+            .shape {
+                border: 2px solid;
+            }
+            #theme-toggle {
+                border: 2px solid;
+                background-color: #fff;
+                color: #000;
+            }
+            #theme-toggle:hover {
+                background-color: #eee;
+            }
+        }
+
+        /* Custom styles for logo */
+        #logo-toggle {
+            position: fixed; /* Fix the position */
+            top: 1rem;
+            right: 1rem;
+            z-index: 10; /* Ensure it's above other elements */
+            cursor: pointer;
+        }
+
+        .logo {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 50%; /* Make it rounded */
+            transition: transform 0.5s ease-in-out; /* Smooth transition */
+        }
+
+        .logo:hover {
+             transform: rotate(360deg); /* Full rotation on hover */
+        }
+
+        /* Add this to your CSS */
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#bf360c',  // Brown
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="p-4">
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="12" cy="12" r="5" />
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M21 12.79A9 9 0 0111.21 3a7 7 0 100 14 9 9 0 009.79-4.21z" />
+        </svg>
+    </button>
+
+    <header class="text-center my-8">
+        <h1 class="text-4xl font-bold mb-4 text-primary">The Essence of Shape</h1>
+        <p class="text-xl text-primary">Building Blocks of Visual Design</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto">
+        <section id="section1" class="my-8 p-6 rounded-lg shadow-md bg-white/80">
+            <h2 id="section1-title" class="text-2xl font-semibold mb-4 text-primary">What is Shape in Design?</h2>
+            <p class="leading-relaxed text-primary">
+                Shape is a two-dimensional area with recognizable boundaries created by lines, color, or value changes. Shapes can be:
+            </p>
+            <ul class="list-disc list-inside space-y-2 mt-4 text-primary">
+                <li><strong>Geometric:</strong> Precise and regular (circles, squares, triangles)</li>
+                <li><strong>Organic:</strong> Irregular and natural (leaves, clouds, ink blobs)</li>
+                <li><strong>Abstract:</strong> Simplified versions of reality (icons, logos)</li>
+                <li><strong>Positive/Negative:</strong> The shape itself or the space around it</li>
+            </ul>
+        </section>
+
+        <section id="section2" class="my-8 p-6 rounded-lg shadow-md bg-white/80">
+            <h2 class="text-2xl font-semibold mb-4 text-primary">Types of Shapes</h2>
+            <div class="shape-demo rounded-lg">
+                <div class="shape" draggable="true"></div>
+                <div class="shape circle" draggable="true"></div>
+                <div class="shape triangle" draggable="true"></div>
+                <div class="shape oval" draggable="true"></div>
+                <div class="shape rectangle" draggable="true"></div>
+                <div class="shape hexagon" draggable="true"></div>
+                <input type="color" id="shape-color-picker" value="#bf360c" class="m-4">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Geometric Shapes</h3>
+                    <p class="text-primary">Convey order, efficiency, and man-made qualities</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Organic Shapes</h3>
+                    <p class="text-primary">Feel natural, comforting, and approachable</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Abstract Shapes</h3>
+                    <p class="text-primary">Represent concepts through simplification</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Positive Shapes</h3>
+                    <p class="text-primary">The main subjects or foreground elements</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Negative Shapes</h3>
+                    <p class="text-primary">The background or space around objects</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-bold mb-2 text-primary">Complex Shapes</h3>
+                    <p class="text-primary">Combine multiple forms for detailed representation</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="section3" class="my-8 p-6 rounded-lg shadow-md bg-white/80">
+            <h2 class="text-2xl font-semibold mb-4 text-primary">Psychology of Shapes</h2>
+            <p class="leading-relaxed mb-4 text-primary">
+                Different shapes evoke different emotional responses:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-primary">
+                <li><strong>Circles</strong> suggest unity, eternity, and protection</li>
+                <li><strong>Squares</strong> convey stability, honesty, and order</li>
+                <li><strong>Triangles</strong> represent energy, power, and conflict</li>
+                <li><strong>Spirals</strong> signify growth, transformation, and creativity</li>
+                <li><strong>Organic shapes</strong> feel comforting, natural, and approachable</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="text-center mt-8 text-sm text-primary">
+        &copy; 2023 Design Elements Explained
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const shapeColorPicker = document.getElementById('shape-color-picker');
+        const shapes = document.querySelectorAll('.shape');
+        const sunIcon = document.getElementById('sun-icon');
+        const moonIcon = document.getElementById('moon-icon');
+
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode');
+
+            // Toggle visibility of icons
+            if (body.classList.contains('dark-mode')) {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                themeToggle.classList.add('dark'); // Add dark class
+            } else {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                themeToggle.classList.remove('dark'); // Remove dark class
+            }
+        });
+
+        if (localStorage.getItem('theme') === 'dark-mode') {
+            body.classList.add('dark-mode');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            themeToggle.classList.add('dark'); // Ensure dark class is applied on load
+        }
+
+        shapeColorPicker.addEventListener('input', (event) => {
+            const color = event.target.value;
+            shapes.forEach(shape => {
+                shape.style.backgroundColor = color;
+                if (shape.classList.contains('triangle')) {
+                    shape.style.borderBottomColor = color;
+                }
+            });
+        });
+
+        // Drag and drop functionality
+        let draggedShape = null;
+
+        shapes.forEach(shape => {
+            shape.addEventListener('dragstart', (event) => {
+                draggedShape = event.target;
+                event.dataTransfer.effectAllowed = 'move';
+            });
+        });
+
+        document.body.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+        });
+
+        document.body.addEventListener('drop', (event) => {
+            event.preventDefault();
+            if (event.target.classList.contains('shape-demo') && draggedShape) {
+                event.target.appendChild(draggedShape);
+            } else if (event.target.classList.contains('shape')) {
+                 const rect = event.target.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+
+                // Insert before or after based on drop position
+                if (event.clientX > centerX || event.clientY > centerY) {
+                    event.target.parentNode.insertBefore(draggedShape, event.target.nextSibling); // Insert after
+                } else {
+                    event.target.parentNode.insertBefore(draggedShape, event.target); // Insert before
+                }
+            }
+            draggedShape = null; // Reset
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secondary Action: Animation Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Color System - Based on Color Psychology */
+        :root {
+            /* Light Mode Colors */
+            --primary-light: #FF6B6B; /* Warm red for energy and attention */
+            --secondary-light: #4ECDC4; /* Teal for balance and creativity */
+            --accent-light: #FFE66D; /* Yellow for optimism and focus */
+            --bg-light: #F7FFF7; /* Very light green for calmness */
+            --text-light: #292F36; /* Dark gray-blue for readability */
+            --card-light: #FFFFFF; /* Pure white for clarity */
+            --border-light: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-light: rgba(41, 47, 54, 0.1); /* Text color with opacity */
+            
+            /* Technique Colors */
+            --secondary-light: #7E57C2; /* Deep Purple for Secondary Action */
+            --character-light: #9575CD; /* Lighter Purple for character */
+            --hat-light: #B39DDB; /* Lightest Purple for hat */
+            
+            /* Dark Mode Colors */
+            --primary-dark: #FF9E9E; /* Softer red for dark mode */
+            --secondary-dark: #6ED3CF; /* Brighter teal for contrast */
+            --accent-dark: #FFEE93; /* Softer yellow */
+            --bg-dark: #1A1A2E; /* Deep navy for reduced eye strain */
+            --text-dark: #E6E6E6; /* Light gray for readability */
+            --card-dark: #16213E; /* Darker blue for cards */
+            --border-dark: #2D3748; /* Dark gray border */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Darker shadow */
+            
+            /* Technique Colors Dark */
+            --secondary-dark: #B39DDB; /* Lighter Purple */
+            --character-dark: #D1C4E9; /* Lighter Purple */
+            --hat-dark: #EDE7F6; /* Lightest Purple */
+            
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        html.dark h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+        }
+
+        html.dark h2::after {
+            background: var(--secondary-dark);
+        }
+
+        p {
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Demo Container */
+        .demo-container {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-light) 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            margin: var(--space-xl) 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            border: 2px solid var(--border-light);
+        }
+
+        html.dark .demo-container {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-dark) 100%);
+            border-color: var(--border-dark);
+        }
+
+        /* Character */
+        .character-container {
+            width: 60px;
+            height: 120px;
+            position: relative;
+            animation: subtleIdle 4s infinite ease-in-out;
+        }
+
+        .character {
+            width: 60px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, var(--character-light), var(--secondary-light));
+            border-radius: 30px 30px 8px 8px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(149, 117, 205, 0.7);
+            transition: all var(--transition-base);
+        }
+
+        .head {
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 30% 30%, var(--character-light), var(--secondary-light));
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            left: 10px;
+            transition: all var(--transition-base);
+        }
+
+        .hat {
+            width: 50px;
+            height: 20px;
+            background-color: var(--hat-light);
+            position: absolute;
+            top: -35px;
+            left: 5px;
+            border-radius: 10px 10px 4px 4px;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(179, 157, 219, 0.7);
+            animation: hatBounce 0.5s infinite alternate ease-in-out;
+        }
+
+        html.dark .character,
+        html.dark .head {
+            background: radial-gradient(circle at 30% 30%, var(--character-dark), var(--secondary-dark));
+            box-shadow: 0 0 20px rgba(209, 196, 233, 0.7);
+        }
+
+        html.dark .hat {
+            background-color: var(--hat-dark);
+            box-shadow: 0 0 10px rgba(237, 231, 246, 0.7);
+        }
+
+        /* Character Animations */
+        @keyframes subtleIdle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        @keyframes hatBounce {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        /* Ground Line */
+        .demo-container::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
+            opacity: 0.3;
+        }
+
+        html.dark .demo-container::before {
+            background: linear-gradient(90deg, transparent, var(--text-dark), transparent);
+        }
+
+        /* List Items with Icons */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            transition: background-color var(--transition-base);
+        }
+
+        .list-item:hover {
+            background-color: rgba(126, 87, 194, 0.1);
+        }
+
+        html.dark .list-item:hover {
+            background-color: rgba(179, 157, 219, 0.1);
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xs);
+        }
+
+        .icon-secondary {
+            background-color: var(--secondary-light);
+        }
+
+        html.dark .icon-secondary {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Comparison Cards */
+        .comparison-card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 5px 15px var(--shadow-light);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .comparison-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 5px 15px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce);
+        }
+
+        html.dark #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        html.dark #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color var(--transition-base);
+        }
+
+        html.dark #theme-toggle svg {
+            color: var(--text-dark);
+        }
+
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        html.dark .sun-icon {
+            display: none;
+        }
+
+        html.dark .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Elements */
+        .secondary-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--secondary-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        html.dark .secondary-vector {
+            background-color: var(--secondary-dark);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .demo-container {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility Focus States */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--secondary-light);
+            outline-offset: 2px;
+        }
+
+        html.dark button:focus-visible, html.dark a:focus-visible {
+            outline-color: var(--secondary-dark);
+        }
+
+        /* Material Icons */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <!-- Decorative Background Elements -->
+    <div class="secondary-vector" style="top: 10%; left: 10%;"></div>
+    <div class="secondary-vector" style="top: 30%; right: 15%;"></div>
+    <div class="secondary-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="secondary-vector" style="bottom: 10%; left: 15%;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center py-12 reveal">
+                <h1>Secondary Action</h1>
+                <p class="text-xl mt-4">Adding Life to Animation</p>
+                
+                <!-- Demo Container -->
+                <div class="demo-container mt-8 mb-12 reveal">
+                    <div class="character-container">
+                        <div class="character">
+                            <div class="head"></div>
+                            <div class="hat"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Is Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>What is Secondary Action?</h2>
+                <div class="prose text-gray-700 dark:text-gray-300">
+                    <p>
+                        Secondary actions are subtle movements that complement and enrich the main action of a character or object. They add layers of realism, personality, and depth, making the animation feel more complex and believable.
+                    </p>
+                    <p>
+                        These actions should support, not distract from, the primary focus. Examples include a character's facial expression while they are speaking, the sway of clothing as someone walks, or the jiggle of keys in a pocket. They provide visual cues that enhance the audience's understanding of the main action or the character's state.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstration Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Examples and Tips</h2>
+                <p>See secondary action in action and learn how to apply it:</p>
+                
+                <div class="demo-container">
+                    <div class="character-container">
+                        <div class="character">
+                            <div class="head"></div>
+                            <div class="hat"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="comparison-card reveal" style="transition-delay: 0.1s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">emoji_people</span>
+                            Examples
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">face</span>
+                                </div>
+                                <p>A character's facial expression during action</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">checkroom</span>
+                                </div>
+                                <p>Clothing or hair movement that follows the body</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">gesture</span>
+                                </div>
+                                <p>Subtle gestures or twitches during dialogue</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">tips_and_updates</span>
+                            Tips
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">priority</span>
+                                </div>
+                                <p>They should enhance, not compete with the main action</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">timelapse</span>
+                                </div>
+                                <p>Offset their timing from the main action for realism</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-secondary">
+                                    <span class="material-symbols-rounded">auto_awesome</span>
+                                </div>
+                                <p>Keep them subtle; avoid over-animating</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Psychology Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Psychology Behind Secondary Action</h2>
+                <p>
+                    Secondary actions are psychologically effective because they mirror the complex and layered movements we observe in the real world. Nothing moves in perfect isolation; there are always subtle reactions, shifts in weight, or accompanying environmental effects.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">psychology</span>
+                            <h3 class="text-xl font-semibold">Realism</h3>
+                        </div>
+                        <p>Mimics the complex movements we see in real life, making animation feel more authentic.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">emoji_emotions</span>
+                            <h3 class="text-xl font-semibold">Personality</h3>
+                        </div>
+                        <p>Adds depth to characters through subtle mannerisms and traits.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">visibility</span>
+                            <h3 class="text-xl font-semibold">Engagement</h3>
+                        </div>
+                        <p>Keeps viewers visually engaged with layered, interesting motion.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Applications in Animation</h2>
+                <p>These principles are used throughout animation to enhance realism:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">theater_comedy</span>
+                            <h3 class="text-xl font-semibold">Character Acting</h3>
+                        </div>
+                        <p>Facial expressions and gestures that support dialogue and emotion.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">directions_walk</span>
+                            <h3 class="text-xl font-semibold">Movement</h3>
+                        </div>
+                        <p>Clothing, hair, and accessories that react to body motion.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">emoji_objects</span>
+                            <h3 class="text-xl font-semibold">Props</h3>
+                        </div>
+                        <p>Objects that react naturally to being moved or interacted with.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">info</span> About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Interactive Character - Pause animation on hover
+        const character = document.querySelector('.character-container');
+        const hat = document.querySelector('.hat');
+        
+        character.addEventListener('mouseenter', () => {
+            character.style.animationPlayState = 'paused';
+            hat.style.animationPlayState = 'paused';
+        });
+        
+        character.addEventListener('mouseleave', () => {
+            character.style.animationPlayState = 'running';
+            hat.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[data-theme="dark"] {
+    --background: var(--gray-900);
+    --foreground: var(--gray-50);
+    --muted: var(--gray-800);
+    --muted-foreground: var(--gray-400);
+    --popover: var(--gray-900);
+    --popover-foreground: var(--gray-50);
+    --card: var(--gray-800);
+    --card-foreground: var(--gray-50);
+    --border: var(--gray-700);
+    --input: var(--gray-700);
+    --ring: hsl(var(--primary-hue) 50% 50% / 0.3);
+    
+    color-scheme: dark;
+  }
+  
+  [data-theme="dark"] .light-only {
+    display: none !important;
+  }

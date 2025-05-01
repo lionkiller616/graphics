@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcs: Animation Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Color System - Based on Color Psychology */
+        :root {
+            /* Light Mode Colors */
+            --primary-light: #FF6B6B; /* Warm red for energy and attention */
+            --secondary-light: #4ECDC4; /* Teal for balance and creativity */
+            --accent-light: #FFE66D; /* Yellow for optimism and focus */
+            --bg-light: #F7FFF7; /* Very light green for calmness */
+            --text-light: #292F36; /* Dark gray-blue for readability */
+            --card-light: #FFFFFF; /* Pure white for clarity */
+            --border-light: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-light: rgba(41, 47, 54, 0.1); /* Text color with opacity */
+            
+            /* Technique Colors */
+            --arc-light: #5E35B1; /* Deep Purple for Arcs */
+            --linear-light: #E65100; /* Deep Orange for Linear Motion */
+            --ball-light: #7E57C2; /* Medium Purple for balls */
+            --arc-line-light: #4527A0; /* Dark Purple for arc line */
+            
+            /* Dark Mode Colors */
+            --primary-dark: #FF9E9E; /* Softer red for dark mode */
+            --secondary-dark: #6ED3CF; /* Brighter teal for contrast */
+            --accent-dark: #FFEE93; /* Softer yellow */
+            --bg-dark: #1A1A2E; /* Deep navy for reduced eye strain */
+            --text-dark: #E6E6E6; /* Light gray for readability */
+            --card-dark: #16213E; /* Darker blue for cards */
+            --border-dark: #2D3748; /* Dark gray border */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Darker shadow */
+            
+            /* Technique Colors Dark */
+            --arc-dark: #9575CD; /* Lighter Purple */
+            --linear-dark: #FFAB40; /* Lighter Orange */
+            --ball-dark: #B39DDB; /* Lighter Purple */
+            --arc-line-dark: #7E57C2; /* Lighter Dark Purple */
+            
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        html.dark h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+        }
+
+        html.dark h2::after {
+            background: var(--secondary-dark);
+        }
+
+        p {
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Demo Container */
+        .demo-container {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-light) 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            margin: var(--space-xl) 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            border: 2px solid var(--border-light);
+        }
+
+        html.dark .demo-container {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-dark) 100%);
+            border-color: var(--border-dark);
+        }
+
+        /* Balls */
+        .ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 0 20px rgba(126, 87, 194, 0.7);
+            transition: all var(--transition-base);
+        }
+
+        .arc-ball {
+            background: radial-gradient(circle at 30% 30%, var(--ball-light), var(--arc-light));
+            animation: arcMotion 3s infinite cubic-bezier(0.5, 0.1, 0.5, 1);
+        }
+
+        .linear-ball {
+            background: radial-gradient(circle at 30% 30%, var(--ball-light), var(--linear-light));
+            animation: linearMotion 3s infinite linear;
+        }
+
+        html.dark .arc-ball {
+            background: radial-gradient(circle at 30% 30%, var(--ball-dark), var(--arc-dark));
+            box-shadow: 0 0 20px rgba(179, 157, 219, 0.7);
+        }
+
+        html.dark .linear-ball {
+            background: radial-gradient(circle at 30% 30%, var(--ball-dark), var(--linear-dark));
+            box-shadow: 0 0 20px rgba(255, 171, 64, 0.7);
+        }
+
+        /* Ball Animations */
+        @keyframes arcMotion {
+            0% {
+                left: 15%;
+                bottom: 20px;
+            }
+            50% {
+                left: 50%;
+                bottom: 180px;
+            }
+            100% {
+                left: 85%;
+                bottom: 20px;
+            }
+        }
+
+        @keyframes linearMotion {
+            0% {
+                left: 15%;
+                bottom: 20px;
+            }
+            50% {
+                left: 50%;
+                bottom: 180px;
+            }
+            100% {
+                left: 85%;
+                bottom: 20px;
+            }
+        }
+
+        /* Arc Line */
+        .arc-line {
+            position: absolute;
+            width: 70%;
+            height: 160px;
+            border: 1px dashed var(--arc-line-light);
+            border-color: transparent transparent var(--arc-line-light) transparent;
+            border-radius: 0 0 100% 100%;
+            bottom: 15px;
+            left: 15%;
+            transform: translateX(-0.7%) scaleX(1.02);
+            opacity: 0.5;
+            pointer-events: none;
+            transition: border-color 0.6s ease;
+        }
+
+        html.dark .arc-line {
+            border-color: transparent transparent var(--arc-line-dark) transparent;
+        }
+
+        /* Ground Line */
+        .demo-container::before {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
+            opacity: 0.3;
+        }
+
+        html.dark .demo-container::before {
+            background: linear-gradient(90deg, transparent, var(--text-dark), transparent);
+        }
+
+        /* List Items with Icons */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            transition: background-color var(--transition-base);
+        }
+
+        .list-item:hover {
+            background-color: rgba(78, 205, 196, 0.1);
+        }
+
+        html.dark .list-item:hover {
+            background-color: rgba(110, 211, 207, 0.1);
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xs);
+        }
+
+        .icon-arc {
+            background-color: var(--arc-light);
+        }
+
+        .icon-linear {
+            background-color: var(--linear-light);
+        }
+
+        html.dark .icon-arc {
+            background-color: var(--arc-dark);
+        }
+
+        html.dark .icon-linear {
+            background-color: var(--linear-dark);
+        }
+
+        /* Comparison Cards */
+        .comparison-card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 5px 15px var(--shadow-light);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .comparison-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 5px 15px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce);
+        }
+
+        html.dark #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        html.dark #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color var(--transition-base);
+        }
+
+        html.dark #theme-toggle svg {
+            color: var(--text-dark);
+        }
+
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        html.dark .sun-icon {
+            display: none;
+        }
+
+        html.dark .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Elements */
+        .arc-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--arc-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        html.dark .arc-vector {
+            background-color: var(--arc-dark);
+        }
+
+        .linear-vector {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--linear-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        html.dark .linear-vector {
+            background-color: var(--linear-dark);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .demo-container {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility Focus States */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--secondary-light);
+            outline-offset: 2px;
+        }
+
+        html.dark button:focus-visible, html.dark a:focus-visible {
+            outline-color: var(--secondary-dark);
+        }
+
+        /* Material Icons */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <!-- Decorative Background Elements -->
+    <div class="arc-vector" style="top: 10%; left: 10%;"></div>
+    <div class="linear-vector" style="top: 30%; right: 15%;"></div>
+    <div class="arc-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="linear-vector" style="bottom: 10%; left: 15%;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center py-12 reveal">
+                <h1>Arcs</h1>
+                <p class="text-xl mt-4">The Natural Path of Movement</p>
+                
+                <!-- Demo Container -->
+                <div class="demo-container mt-8 mb-12 reveal">
+                    <div class="arc-line"></div>
+                    <div class="ball arc-ball"></div>
+                    <div class="ball linear-ball"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Are Arcs Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>What Are Arcs?</h2>
+                <div class="prose text-gray-700 dark:text-gray-300">
+                    <p>
+                        Arcs are the curved trajectories that most natural movements follow. Whether it's a thrown ball, a bird in flight, or the swing of a character's arm, actions tend to move along arcs rather than straight lines.
+                    </p>
+                    <p>
+                        Applying arcs to animation makes motion feel more organic, fluid, and realistic. Movements that travel in straight lines can often appear stiff, mechanical, and unnatural, breaking the illusion of life.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstration Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Comparing Motion Paths</h2>
+                <p>See the difference between arced and linear motion:</p>
+                
+                <div class="demo-container">
+                    <div class="arc-line"></div>
+                    <div class="ball arc-ball"></div>
+                    <div class="ball linear-ball"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="comparison-card reveal" style="transition-delay: 0.1s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">curve_range</span>
+                            Arc Motion
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-arc">
+                                    <span class="material-symbols-rounded">nature_people</span>
+                                </div>
+                                <p>Appears fluid, natural, and dynamic</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-arc">
+                                    <span class="material-symbols-rounded">star</span>
+                                </div>
+                                <p>More visually pleasing and believable</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-arc">
+                                    <span class="material-symbols-rounded">check_circle</span>
+                                </div>
+                                <p>Essential for lifelike character animation</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">straight</span>
+                            Linear Motion
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">robot</span>
+                                </div>
+                                <p>Appears stiff, mechanical, or robotic</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">warning</span>
+                                </div>
+                                <p>Can break the illusion of life</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-linear">
+                                    <span class="material-symbols-rounded">close</span>
+                                </div>
+                                <p>Rarely used in character animation</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Psychology Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Psychology Behind Arcs</h2>
+                <p>
+                    Our brains are naturally attuned to recognizing and predicting curved paths. This is deeply rooted in our experience of the physical world, where gravity and biomechanics cause most projectile motion and limb movements to follow arcs.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--arc-light);">physics</span>
+                            <h3 class="text-xl font-semibold">Natural Physics</h3>
+                        </div>
+                        <p>Gravity and biomechanics naturally create arced movements in the real world.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--arc-light);">psychology</span>
+                            <h3 class="text-xl font-semibold">Visual Expectation</h3>
+                        </div>
+                        <p>Our brains expect and predict arced motion as more natural and believable.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">visibility</span>
+                            <h3 class="text-xl font-semibold">Aesthetic Appeal</h3>
+                        </div>
+                        <p>Curved paths are more visually pleasing and satisfying to watch.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Examples in Animation</h2>
+                <p>These principles are used throughout animation to enhance realism:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--arc-light);">directions_walk</span>
+                            <h3 class="text-xl font-semibold">Walk Cycles</h3>
+                        </div>
+                        <p>Arms and legs follow natural arcs as they swing during movement.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--arc-light);">sports_baseball</span>
+                            <h3 class="text-xl font-semibold">Thrown Objects</h3>
+                        </div>
+                        <p>Balls and projectiles follow parabolic arcs due to gravity.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--arc-light);">pan_tool</span>
+                            <h3 class="text-xl font-semibold">Gestures</h3>
+                        </div>
+                        <p>Hand movements naturally follow arcs when pointing or gesturing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">info</span> About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Interactive Balls - Pause animation on hover
+        const arcBall = document.querySelector('.arc-ball');
+        const linearBall = document.querySelector('.linear-ball');
+        
+        arcBall.addEventListener('mouseenter', () => {
+            arcBall.style.animationPlayState = 'paused';
+        });
+        arcBall.addEventListener('mouseleave', () => {
+            arcBall.style.animationPlayState = 'running';
+        });
+        
+        linearBall.addEventListener('mouseenter', () => {
+            linearBall.style.animationPlayState = 'paused';
+        });
+        linearBall.addEventListener('mouseleave', () => {
+            linearBall.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>

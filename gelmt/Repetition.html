@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repetition: A Design Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Mode - Repetition Theme (using greens/yellows) */
+            --bg-color-light: #f1f8e9; /* Light Lime */
+            --text-color-light: #33691e; /* Dark Lime */
+            --card-bg-light: #ffffff;
+            --card-text-light: #33691e;
+            --section-bg-light: #f1f8e9;
+            --section-text-light: #33691e;
+            --element-color-primary-light: #8bc34a; /* Lime */
+            --element-color-secondary-light: #aed581; /* Light Lime */
+            --repetition-demo-bg-light: #dcedc8; /* Lighter Lime */
+            --blurred-bg-light: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZjFmOGU5IiAvPiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZGNlZGM4IiAvPiAgICA8L2xpbmVhckdyYWRpZW50PiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNncmFkMSkiIC8+PC9zdmc+'); /* Light lime gradient */
+        }
+
+        /* Dark Mode - Repetition Theme */
+        .dark-mode {
+            --bg-color: #33691e; /* Dark Lime */
+            --text-color: #f1f8e9; /* Light Lime */
+            --card-bg: #558b2f; /* Darker Lime */
+            --card-text: #f1f8e9;
+            --section-bg: #33691e;
+            --section-text: #f1f8e9;
+            --element-color-primary: #aed581; /* Light Lime */
+            --element-color-secondary: #dcedc8; /* Lighter Lime */
+            --repetition-demo-bg: #1b5e20; /* Very Dark Green */
+             --blurred-bg-dark: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMzM2OTFlIiAvPiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNTViYjJmIiAvPj4gICAgPC9saW5lYXJHcmFkaWVudD4gICAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9InVybCgjZ3JhZDIpIiAvPjwvc3ZnPg=='); /* Dark lime gradient */
+        }
+
+        /* Apply Theme Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            position: relative; /* Needed for blurred background */
+        }
+
+        /* Blurred Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--blurred-bg, var(--blurred-bg-light));
+            background-size: cover;
+            filter: blur(20px); /* Apply blur effect */
+            z-index: -1; /* Place behind content */
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        section {
+             background-color: var(--section-bg, var(--card-bg-light));
+             color: var(--section-text, var(--card-text-light));
+             transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .color-card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Apply animations */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+         .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            transition: fill 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle svg {
+            fill: #f0f0f0;
+        }
+
+        /* CSS for Repetition Demonstrations */
+        .repetition-demo-container {
+            width: 100%;
+            min-height: 150px; /* Min height to accommodate content */
+            position: relative;
+            border: 2px solid var(--text-color, var(--text-color-light));
+            border-radius: 8px;
+            margin-top: 20px;
+            overflow: hidden;
+            background-color: var(--repetition-demo-bg, var(--repetition-demo-bg-light));
+            display: flex;
+            flex-wrap: wrap; /* Allow elements to wrap */
+            gap: 10px; /* Space between elements */
+            padding: 20px; /* Padding inside container */
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+        }
+
+        .repetition-element {
+            width: 30px;
+            height: 30px;
+            background-color: var(--element-color-primary, var(--element-color-primary-light));
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .repetition-element.circle {
+             border-radius: 50%;
+        }
+
+        /* Specific demo layouts */
+        .repetition-demo-container.pattern {
+            justify-content: center;
+            align-items: center;
+        }
+
+         .repetition-demo-container.style-consistency .repetition-element {
+             width: 80px;
+             height: 40px;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             font-size: 0.9rem;
+             font-weight: bold;
+             color: var(--section-bg, var(--section-bg-light)); /* Contrast text */
+         }
+
+         .repetition-demo-container.rhythm {
+             justify-content: flex-start;
+             align-items: center;
+         }
+
+         .rhythm .repetition-element {
+             margin-right: 5px; /* Smaller gap */
+         }
+
+         .rhythm .repetition-element:nth-child(3n) {
+             margin-right: 20px; /* Larger gap every 3 elements */
+         }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="p-8">
+
+    <button id="themeToggle" class="theme-toggle">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1s1-.45 1-1V3c0-.55-.45-1-1-1zm8.59 2.91l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM4.7 5.61l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM21 11h-1c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm-18 0H3c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm15.3 5.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM5.61 19.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>
+         <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c.4-.4.9-.6 1.4-.6.5 0 1 .2 1.4.6.4.4.6.9.6 1.4 0 .5-.2 1-.6 1.4-.4.4-.9.6-1.4.6-.5 0-1-.2-1.4-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.4zm-.7 10.4c-3.3 0-6-2.7-6-6s2.7-6 6-6c.6 0 1.1.1 1.6.3-.4.8-.6 1.7-.6 2.7 0 3.3 2.7 6 6 6.1 1 .1 1.9-.2 2.7-.6.2.5.3 1 .3 1.6 0 3.3-2.7 6-6 6z"/></svg>
+    </button>
+
+
+    <header class="text-center my-12 animate-fadeIn">
+        <h1 class="text-5xl font-bold mb-4">Understanding Repetition</h1>
+        <p class="text-xl">Creating Consistency and Visual Rhythm</p>
+    </header>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInLeft">
+        <h2 class="text-3xl font-semibold mb-6">What is Repetition?</h2>
+        <p class="leading-relaxed">
+            Repetition in graphic design involves using the same or similar elements throughout a design. This could be repeating colors, fonts, shapes, textures, spacing, or other visual elements. Repetition creates consistency, strengthens the design, and helps unify different parts of a composition. It makes the design feel cohesive and organized, guiding the viewer through the information by creating predictable patterns.
+        </p>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInRight">
+        <h2 class="text-3xl font-semibold mb-6">Using Repetition Effectively</h2>
+        <p class="leading-relaxed mb-6">
+            Repetition is a powerful tool that can be applied in various ways:
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Consistency:</strong> Repeating styles (like headings, body text, button appearance) ensures a uniform look and feel across the design.</li>
+            <li><strong>Rhythm and Pattern:</strong> Repeating elements at regular or irregular intervals creates a sense of rhythm and visual flow, making the design more engaging.</li>
+            <li><strong>Branding:</strong> Consistent use of logos, colors, and typography reinforces brand identity.</li>
+            <li><strong>Unity:</strong> Repeating elements ties different parts of a complex design together, creating a cohesive whole.</li>
+            <li><strong>Emphasis:</strong> While contrast creates emphasis by difference, repetition can create emphasis by accumulation or by breaking a pattern.</li>
+        </ul>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Demonstrating Repetition</h2>
+        <p class="leading-relaxed mb-8">
+            Let's visualize how repeating elements creates different effects.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Repetition as Pattern</h3>
+                <div class="repetition-demo-container pattern">
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                     <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element circle"></div>
+                </div>
+                <p class="text-sm text-center mt-2">
+                    Repeating shapes and colors creates a visual pattern.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Style Consistency</h3>
+                <div class="repetition-demo-container style-consistency">
+                    <div class="repetition-element">Button A</div>
+                    <div class="repetition-element">Button B</div>
+                    <div class="repetition-element">Button C</div>
+                </div>
+                 <p class="text-sm text-center mt-2">
+                    Repeating the same style for similar elements creates consistency.
+                </p>
+            </div>
+
+             <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Creating Rhythm</h3>
+                <div class="repetition-demo-container rhythm">
+                     <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                     <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                     <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                    <div class="repetition-element"></div>
+                </div>
+                 <p class="text-sm text-center mt-2">
+                    Repeating elements with varied spacing creates rhythm.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+     <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Repetition in UI/UX and Psychology</h2>
+        <p class="leading-relaxed mb-8">
+            Repetition is a cornerstone of effective UI/UX design, contributing to usability, learnability, and user trust.
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Familiarity and Predictability:</strong> Consistent use of elements makes an interface feel familiar and predictable, reducing cognitive load and making it easier for users to learn how to interact with it.</li>
+            <li><strong>Stronger Branding:</strong> Repeating brand elements (logo, colors, fonts) throughout a website or application reinforces brand identity and makes it more memorable.</li>
+            <li><strong>Improved Navigation:</strong> Consistent navigation patterns and visual cues help users understand where they are and how to move around the interface.</li>
+            <li><strong>Visual Harmony and Unity:</strong> Repetition ties together disparate parts of a complex interface, creating a sense of unity and visual harmony that is aesthetically pleasing and easy to process.</li>
+            <li><strong>Communicating Relationships:</strong> Repeating styles for similar types of information (e.g., all links are blue and underlined) helps users quickly understand the function or category of an element.</li>
+        </ul>
+    </section>
+
+    <footer class="text-center my-12 text-sm animate-fadeIn">
+        <p>&copy; 2023 Design Principles Explained</p>
+    </footer>
+
+    <script>
+        // JavaScript for animations and theme toggle
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Optional: Add intersection observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible'); // Add a class to trigger CSS animation
+                        entry.target.classList.remove('animate-slideInLeft', 'animate-slideInRight', 'animate-fadeIn'); // Remove initial animation classes
+                         // Re-add the animation class to trigger it on scroll
+                        if (entry.target.classList.contains('initial-animate-slideInLeft')) {
+                             entry.target.classList.add('animate-slideInLeft');
+                        } else if (entry.target.classList.contains('initial-animate-slideInRight')) {
+                             entry.target.classList.add('animate-slideInRight');
+                        } else if (entry.target.classList.contains('initial-animate-fadeIn')) {
+                             entry.target.classList.add('animate-fadeIn');
+                        }
+                        entry.target.style.opacity = 1; // Ensure visibility after animation
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            // Add initial animation classes and observe sections
+            document.querySelectorAll('section, header, footer').forEach(section => {
+                if (section.classList.contains('animate-slideInLeft')) {
+                    section.classList.add('initial-animate-slideInLeft'); // Mark for re-adding
+                    section.classList.remove('animate-slideInLeft'); // Remove to wait for scroll
+                } else if (section.classList.contains('animate-slideInRight')) {
+                     section.classList.add('initial-animate-slideInRight');
+                     section.classList.remove('animate-slideInRight');
+                } else if (section.classList.contains('animate-fadeIn')) {
+                     section.classList.add('initial-animate-fadeIn');
+                     section.classList.remove('animate-fadeIn');
+                }
+                section.style.opacity = 0; // Hide initially
+                observer.observe(section);
+            });
+
+             // Add a class for visible state to trigger the animation
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                .visible {
+                    opacity: 1 !important;
+                }
+            `, styleSheet.cssRules.length);
+
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+
+            // Check for saved theme in local storage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                 // Default to light mode if no theme is saved or saved theme is not dark
+                body.classList.remove('dark-mode');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+
+                // Toggle icons
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+
+                // Save theme preference to local storage
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Straight Ahead vs Pose to Pose: Animation Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+        /* Color System - Based on Color Psychology */
+        :root {
+            /* Light Mode Colors */
+            --primary-light: #FF6B6B; /* Warm red for energy and attention */
+            --secondary-light: #4ECDC4; /* Teal for balance and creativity */
+            --accent-light: #FFE66D; /* Yellow for optimism and focus */
+            --bg-light: #F7FFF7; /* Very light green for calmness */
+            --text-light: #292F36; /* Dark gray-blue for readability */
+            --card-light: #FFFFFF; /* Pure white for clarity */
+            --border-light: #E0E0E0; /* Light gray for subtle borders */
+            --shadow-light: rgba(41, 47, 54, 0.1); /* Text color with opacity */
+            
+            /* Technique Colors */
+            --straight-light: #2E7D32; /* Dark Green for Straight Ahead */
+            --pose-light: #1976D2; /* Blue for Pose to Pose */
+            --character-light: #66BB6A; /* Green for characters */
+            
+            /* Dark Mode Colors */
+            --primary-dark: #FF9E9E; /* Softer red for dark mode */
+            --secondary-dark: #6ED3CF; /* Brighter teal for contrast */
+            --accent-dark: #FFEE93; /* Softer yellow */
+            --bg-dark: #1A1A2E; /* Deep navy for reduced eye strain */
+            --text-dark: #E6E6E6; /* Light gray for readability */
+            --card-dark: #16213E; /* Darker blue for cards */
+            --border-dark: #2D3748; /* Dark gray border */
+            --shadow-dark: rgba(0, 0, 0, 0.3); /* Darker shadow */
+            
+            /* Technique Colors Dark */
+            --straight-dark: #81C784; /* Lighter Dark Green */
+            --pose-dark: #64B5F6; /* Lighter Blue */
+            --character-dark: #A5D6A7; /* Lighter Green */
+            
+            /* Animation Timings */
+            --transition-base: 0.3s ease-in-out;
+            --transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color var(--transition-slow), color var(--transition-slow);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        html.dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            color: inherit;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.1;
+            background: linear-gradient(90deg, var(--primary-light), var(--accent-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        html.dark h1 {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: var(--space-sm);
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary-light);
+            border-radius: 2px;
+        }
+
+        html.dark h2::after {
+            background: var(--secondary-dark);
+        }
+
+        p {
+            margin-bottom: var(--space-md);
+            font-size: 1.1rem;
+        }
+
+        /* Layout Components */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        section {
+            padding: var(--space-xl) 0;
+            position: relative;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 10px 20px var(--shadow-light);
+            transition: transform var(--transition-base), box-shadow var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .card {
+            background-color: var(--card-dark);
+            box-shadow: 0 10px 20px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Demo Container */
+        .demo-container {
+            height: 300px;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-light) 100%);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            margin: var(--space-xl) 0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            border: 2px solid var(--border-light);
+        }
+
+        html.dark .demo-container {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--secondary-dark) 100%);
+            border-color: var(--border-dark);
+        }
+
+        /* Character */
+        .character {
+            width: 40px;
+            height: 80px;
+            border-radius: 20px 20px 8px 8px;
+            position: relative;
+            box-shadow: 
+                0 0 20px rgba(255, 230, 109, 0.7),
+                0 0 40px rgba(255, 230, 109, 0.4);
+            transition: all var(--transition-base);
+        }
+
+        .straight-ahead {
+            background: radial-gradient(circle at 30% 30%, var(--character-light), var(--straight-light));
+            animation: straightAhead 6s infinite linear;
+        }
+
+        .pose-to-pose {
+            background: radial-gradient(circle at 30% 30%, var(--character-light), var(--pose-light));
+            animation: poseToPose 6s infinite ease-in-out;
+        }
+
+        html.dark .straight-ahead {
+            background: radial-gradient(circle at 30% 30%, var(--character-dark), var(--straight-dark));
+            box-shadow: 
+                0 0 20px rgba(129, 199, 132, 0.7),
+                0 0 40px rgba(129, 199, 132, 0.4);
+        }
+
+        html.dark .pose-to-pose {
+            background: radial-gradient(circle at 30% 30%, var(--character-dark), var(--pose-dark));
+            box-shadow: 
+                0 0 20px rgba(100, 181, 246, 0.7),
+                0 0 40px rgba(100, 181, 246, 0.4);
+        }
+
+        /* Enhanced Animations */
+        @keyframes straightAhead {
+            0% { transform: translateX(-80px) translateY(0) rotate(0); }
+            15% { transform: translateX(-60px) translateY(-40px) rotate(15deg); }
+            30% { transform: translateX(-20px) translateY(0) rotate(-10deg); }
+            45% { transform: translateX(0px) translateY(-20px) rotate(5deg); }
+            60% { transform: translateX(30px) translateY(-50px) rotate(-20deg); }
+            75% { transform: translateX(60px) translateY(0) rotate(10deg); }
+            100% { transform: translateX(80px) translateY(0) rotate(0); }
+        }
+
+        @keyframes poseToPose {
+            0%, 20% { transform: translateX(-80px) translateY(0) rotate(0); }
+            40% { transform: translateX(0) translateY(-80px) rotate(0); }
+            60%, 80% { transform: translateX(0) translateY(-80px) rotate(0); }
+            100% { transform: translateX(80px) translateY(0) rotate(0); }
+        }
+
+        /* Ground Line */
+        .demo-container::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
+            opacity: 0.3;
+        }
+
+        html.dark .demo-container::before {
+            background: linear-gradient(90deg, transparent, var(--text-dark), transparent);
+        }
+
+        /* List Items with Icons */
+        .list-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+            padding: var(--space-sm);
+            border-radius: 8px;
+            transition: background-color var(--transition-base);
+        }
+
+        .list-item:hover {
+            background-color: rgba(78, 205, 196, 0.1);
+        }
+
+        html.dark .list-item:hover {
+            background-color: rgba(110, 211, 207, 0.1);
+        }
+
+        .list-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xs);
+        }
+
+        .icon-straight {
+            background-color: var(--straight-light);
+        }
+
+        .icon-pose {
+            background-color: var(--pose-light);
+        }
+
+        html.dark .icon-straight {
+            background-color: var(--straight-dark);
+        }
+
+        html.dark .icon-pose {
+            background-color: var(--pose-dark);
+        }
+
+        /* Comparison Cards */
+        .comparison-card {
+            background-color: var(--card-light);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            box-shadow: 0 5px 15px var(--shadow-light);
+            transition: all var(--transition-base);
+            border: 1px solid var(--border-light);
+        }
+
+        html.dark .comparison-card {
+            background-color: var(--card-dark);
+            box-shadow: 0 5px 15px var(--shadow-dark);
+            border-color: var(--border-dark);
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Theme Toggle */
+        #theme-toggle {
+            cursor: pointer;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--card-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: var(--space-md);
+            right: var(--space-md);
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow-light);
+            transition: all var(--transition-bounce);
+        }
+
+        html.dark #theme-toggle {
+            background-color: var(--card-dark);
+            border-color: var(--border-dark);
+            box-shadow: 0 4px 12px var(--shadow-dark);
+        }
+
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(15deg);
+            background-color: var(--secondary-light);
+            border-color: var(--secondary-light);
+        }
+
+        html.dark #theme-toggle:hover {
+            background-color: var(--secondary-dark);
+            border-color: var(--secondary-dark);
+        }
+
+        #theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            color: var(--text-light);
+            transition: color var(--transition-base);
+        }
+
+        html.dark #theme-toggle svg {
+            color: var(--text-dark);
+        }
+
+        .sun-icon {
+            display: block;
+        }
+
+        .moon-icon {
+            display: none;
+        }
+
+        html.dark .sun-icon {
+            display: none;
+        }
+
+        html.dark .moon-icon {
+            display: block;
+        }
+
+        /* Decorative Elements */
+        .straight-vector {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: var(--straight-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        html.dark .straight-vector {
+            background-color: var(--straight-dark);
+        }
+
+        .pose-vector {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--pose-light);
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        html.dark .pose-vector {
+            background-color: var(--pose-dark);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(50px, 50px) rotate(5deg);
+            }
+            50% {
+                transform: translate(0, 100px) rotate(0deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(-5deg);
+            }
+        }
+
+        /* Scroll Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        @media (min-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-lg);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .demo-container {
+                height: 250px;
+            }
+        }
+
+        /* Accessibility Focus States */
+        button:focus-visible, a:focus-visible {
+            outline: 3px solid var(--secondary-light);
+            outline-offset: 2px;
+        }
+
+        html.dark button:focus-visible, html.dark a:focus-visible {
+            outline-color: var(--secondary-dark);
+        }
+
+        /* Material Icons */
+        .material-symbols-rounded {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="light">
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" aria-label="Toggle dark mode">
+        <span class="material-symbols-rounded sun-icon">light_mode</span>
+        <span class="material-symbols-rounded moon-icon">dark_mode</span>
+    </button>
+
+    <!-- Decorative Background Elements -->
+    <div class="straight-vector" style="top: 10%; left: 10%;"></div>
+    <div class="pose-vector" style="top: 30%; right: 15%;"></div>
+    <div class="straight-vector" style="bottom: 20%; right: 20%;"></div>
+    <div class="pose-vector" style="bottom: 10%; left: 15%;"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="text-center py-12 reveal">
+                <h1>Straight Ahead vs Pose to Pose</h1>
+                <p class="text-xl mt-4">Two Fundamental Approaches to Animation</p>
+                
+                <!-- Demo Container -->
+                <div class="demo-container mt-8 mb-12 reveal">
+                    <div class="character straight-ahead"></div>
+                    <div class="character pose-to-pose"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Are These Techniques Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>What Are These Techniques?</h2>
+                <div class="two-column mt-6">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                            <span class="material-symbols-rounded" style="color: var(--straight-light);">linear_scale</span>
+                            Straight Ahead Action
+                        </h3>
+                        <p>
+                            Straight Ahead action is an animation technique where the animator draws frame-by-frame in sequence, without planning key poses in advance. This method often results in very fluid, spontaneous, and unpredictable movements, particularly useful for effects like fire, water, or explosions.
+                        </p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+                            <span class="material-symbols-rounded" style="color: var(--pose-light);">keyboard_double_arrow_up</span>
+                            Pose to Pose Action
+                        </h3>
+                        <p>
+                            Pose to Pose action involves planning the major "key" poses of the animation first. The animator then goes back and fills in the frames between these key poses (in-betweens). This method provides more control over the timing, staging, and overall flow of the animation, making it ideal for character animation and structured sequences.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demonstration Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>See It in Action</h2>
+                <p>Compare the movement styles of these two animation techniques:</p>
+                
+                <div class="demo-container">
+                    <div class="character straight-ahead"></div>
+                    <div class="character pose-to-pose"></div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div class="comparison-card reveal" style="transition-delay: 0.1s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">linear_scale</span>
+                            Straight Ahead
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-straight">
+                                    <span class="material-symbols-rounded">auto_fix_high</span>
+                                </div>
+                                <p>Fluid, spontaneous, and unpredictable motion</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-straight">
+                                    <span class="material-symbols-rounded">water</span>
+                                </div>
+                                <p>Great for organic effects like fire, water, or smoke</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-straight">
+                                    <span class="material-symbols-rounded">warning</span>
+                                </div>
+                                <p>Can be harder to maintain consistency and proportions</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card reveal" style="transition-delay: 0.2s;">
+                        <h3 class="font-bold mb-4 text-center flex items-center justify-center gap-2">
+                            <span class="material-symbols-rounded">keyboard_double_arrow_up</span>
+                            Pose to Pose
+                        </h3>
+                        <ul>
+                            <li class="list-item">
+                                <div class="list-icon icon-pose">
+                                    <span class="material-symbols-rounded">timer</span>
+                                </div>
+                                <p>More control over timing, staging, and composition</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-pose">
+                                    <span class="material-symbols-rounded">person</span>
+                                </div>
+                                <p>Ideal for character animation and acting</p>
+                            </li>
+                            <li class="list-item">
+                                <div class="list-icon icon-pose">
+                                    <span class="material-symbols-rounded">speed</span>
+                                </div>
+                                <p>Can sometimes result in stiffer, less fluid motion</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Psychology Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>The Psychology Behind These Techniques</h2>
+                <p>
+                    The perception of spontaneity versus control in these techniques aligns with how our brains interpret movement. Erratic or unpredictable motion can feel more "natural" in the sense of being less planned, like organic processes. Deliberate, smooth transitions between clear points feel more "intentional" or "controlled."
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--straight-light);">psychology</span>
+                            <h3 class="text-xl font-semibold">Spontaneity</h3>
+                        </div>
+                        <p>Straight Ahead animation feels more organic and unpredictable, similar to natural phenomena.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--pose-light);">memory</span>
+                            <h3 class="text-xl font-semibold">Control</h3>
+                        </div>
+                        <p>Pose to Pose provides structure and clarity, making complex actions easier to follow.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">blend</span>
+                            <h3 class="text-xl font-semibold">Best of Both</h3>
+                        </div>
+                        <p>Most animation combines both techniques for structured yet lively movement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section>
+        <div class="container">
+            <div class="card reveal">
+                <h2>Examples in Animation</h2>
+                <p>These techniques are used throughout animation history:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="reveal" style="transition-delay: 0.1s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--straight-light);">water_drop</span>
+                            <h3 class="text-xl font-semibold">Natural Effects</h3>
+                        </div>
+                        <p>Straight Ahead excels for water, fire, smoke, and other fluid simulations.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.2s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--pose-light);">theater_comedy</span>
+                            <h3 class="text-xl font-semibold">Character Acting</h3>
+                        </div>
+                        <p>Pose to Pose is essential for clear character performances and storytelling.</p>
+                    </div>
+                    <div class="reveal" style="transition-delay: 0.3s;">
+                        <div class="flex items-center gap-4 mb-3">
+                            <span class="material-symbols-rounded text-3xl" style="color: var(--secondary-light);">auto_awesome</span>
+                            <h3 class="text-xl font-semibold">Hybrid Approach</h3>
+                        </div>
+                        <p>Modern animation often uses Pose to Pose for structure with Straight Ahead flourishes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-sm opacity-75">
+        <p>&copy; 2023 Animation Principles Explained</p>
+        <div class="mt-2 flex justify-center gap-4">
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">share</span> Share</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">favorite</span> Like</a>
+            <a href="#" class="hover:underline"><span class="material-symbols-rounded align-middle">info</span> About</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dark Mode Toggle JavaScript
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check local storage for theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark');
+            let theme = 'light';
+            if (htmlElement.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+
+        // Scroll Reveal Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.reveal');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // Interactive Characters - Pause animation on hover
+        const straightChar = document.querySelector('.straight-ahead');
+        const poseChar = document.querySelector('.pose-to-pose');
+        
+        straightChar.addEventListener('mouseenter', () => {
+            straightChar.style.animationPlayState = 'paused';
+        });
+        straightChar.addEventListener('mouseleave', () => {
+            straightChar.style.animationPlayState = 'running';
+        });
+        
+        poseChar.addEventListener('mouseenter', () => {
+            poseChar.style.animationPlayState = 'paused';
+        });
+        poseChar.addEventListener('mouseleave', () => {
+            poseChar.style.animationPlayState = 'running';
+        });
+    </script>
+</body>
+</html>

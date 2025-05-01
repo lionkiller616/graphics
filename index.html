@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphics Design System | Modern UI/UX Principles</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="header__logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="var(--primary-500)"/>
+                    <path d="M22 12C22 13.1046 21.1046 14 20 14C18.8954 14 18 13.1046 18 12C18 10.8954 18.8954 10 20 10C21.1046 10 22 10.8954 22 12Z" fill="white"/>
+                    <path d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="white"/>
+                    <path d="M16 24C19.3137 24 22 21.3137 22 18H10C10 21.3137 12.6863 24 16 24Z" fill="white"/>
+                </svg>
+                <span>Graphics</span>
+            </a>
+            <nav class="header__nav">
+                <a href="index.html" class="header__link header__link--active">Home</a>
+                <a href="about.html" class="header__link">About</a>
+                <a href="principles.html" class="header__link">Principles</a>
+                <a href="elements.html" class="header__link">Elements</a>
+                <a href="contact.html" class="header__link">Contact</a>
+            </nav>
+            <div class="header__actions">
+                <button class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-toggle__thumb"></span>
+                </button>
+                <button class="header__mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero__content">
+                <h1 class="hero__title">Design System for Modern Digital Experiences</h1>
+                <p class="hero__description">A comprehensive collection of design principles, UI components, and interactive patterns to create stunning visual interfaces with cutting-edge animations.</p>
+                <div class="hero__buttons">
+                    <a href="#explore" class="button button--lg">Explore Components</a>
+                    <a href="principles.html" class="button button--lg button--outline">Design Principles</a>
+                </div>
+            </div>
+            <img src="https://via.placeholder.com/600x400" alt="Design System Illustration" class="hero__image">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="explore">
+        <div class="container">
+            <h2 class="section__title">Core Features</h2>
+            <div class="features__grid">
+                <div class="feature-card fade-up" style="animation-delay: 0.1s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3 class="feature-card__title">Color System</h3>
+                    <p class="feature-card__description">Comprehensive color palettes with accessibility contrast ratios and dynamic theming support.</p>
+                </div>
+                <div class="feature-card fade-up" style="animation-delay: 0.2s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-shapes"></i>
+                    </div>
+                    <h3 class="feature-card__title">Shape Language</h3>
+                    <p class="feature-card__description">Consistent shape system with configurable radius tokens for buttons, cards and more.</p>
+                </div>
+                <div class="feature-card fade-up" style="animation-delay: 0.3s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="feature-card__title">Motion Design</h3>
+                    <p class="feature-card__description">Micro-interactions, transitions and animations with customizable timing functions.</p>
+                </div>
+                <div class="feature-card fade-up" style="animation-delay: 0.4s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-text-height"></i>
+                    </div>
+                    <h3 class="feature-card__title">Typography</h3>
+                    <p class="feature-card__description">Responsive typography scale with perfect vertical rhythm and readability optimization.</p>
+                </div>
+                <div class="feature-card fade-up" style="animation-delay: 0.5s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="feature-card__title">UI Components</h3>
+                    <p class="feature-card__description">50+ accessible components with multiple variants and customization options.</p>
+                </div>
+                <div class="feature-card fade-up" style="animation-delay: 0.6s">
+                    <div class="feature-card__icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-card__title">Responsive</h3>
+                    <p class="feature-card__description">Fully responsive layouts that adapt to any screen size with mobile-first approach.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section__title">Trusted by Design Teams</h2>
+            <div class="testimonials__slider">
+                <div class="testimonial-slide">
+                    <p class="testimonial-slide__content">"This design system has transformed our workflow. We've reduced design debt by 60% and improved consistency across all our products."</p>
+                    <div class="testimonial-slide__author">
+                        <img src="https://via.placeholder.com/80x80" alt="Sarah Johnson" class="testimonial-slide__avatar">
+                        <div class="testimonial-slide__info">
+                            <div class="testimonial-slide__name">Sarah Johnson</div>
+                            <div class="testimonial-slide__role">Lead Designer, TechCorp</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta__content">
+                <h2 class="cta__title">Ready to elevate your design workflow?</h2>
+                <p class="cta__description">Join thousands of designers and developers using our system to build better products faster.</p>
+                <div class="cta__buttons">
+                    <a href="contact.html" class="button button--lg pop-in">Get Started</a>
+                    <a href="about.html" class="button button--lg button--outline pop-in" style="animation-delay: 0.1s">Learn More</a>
+                </div>
+            </div>
+            <div class="cta__pattern"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__container">
+                <div>
+                    <div class="footer__logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z" fill="var(--primary-500)"/>
+                            <path d="M16.5 9C16.5 9.82843 15.8284 10.5 15 10.5C14.1716 10.5 13.5 9.82843 13.5 9C13.5 8.17157 14.1716 7.5 15 7.5C15.8284 7.5 16.5 8.17157 16.5 9Z" fill="white"/>
+                            <path d="M10.5 9C10.5 9.82843 9.82843 10.5 9 10.5C8.17157 10.5 7.5 9.82843 7.5 9C7.5 8.17157 8.17157 7.5 9 7.5C9.82843 7.5 10.5 8.17157 10.5 9Z" fill="white"/>
+                            <path d="M12 18C14.4853 18 16.5 15.9853 16.5 13.5H7.5C7.5 15.9853 9.51472 18 12 18Z" fill="white"/>
+                        </svg>
+                        <span>Graphics Design System</span>
+                    </div>
+                    <p class="footer__text">A comprehensive design system for creating beautiful, consistent user interfaces with motion and interaction at its core.</p>
+                </div>
+                <div>
+                    <h3 class="footer__title">Resources</h3>
+                    <div class="footer__links">
+                        <a href="principles.html" class="footer__link">Design Principles</a>
+                        <a href="elements.html" class="footer__link">UI Elements</a>
+                        <a href="colors.html" class="footer__link">Color System</a>
+                        <a href="animations.html" class="footer__link">Motion Guidelines</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer__title">Company</h3>
+                    <div class="footer__links">
+                        <a href="about.html" class="footer__link">About Us</a>
+                        <a href="contact.html" class="footer__link">Contact</a>
+                        <a href="privacy.html" class="footer__link">Privacy Policy</a>
+                        <a href="terms.html" class="footer__link">Terms of Service</a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="footer__title">Connect</h3>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="footer__social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="footer__social-link"><i class="fab fa-dribbble"></i></a>
+                        <a href="#" class="footer__social-link"><i class="fab fa-figma"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__divider"></div>
+            <div class="footer__bottom">
+                <p>&copy; 2023 Graphics Design System. All rights reserved.</p>
+                <div>
+                    <a href="sitemap.html" class="footer__link">Sitemap</a>
+                </div>
+            </div>
+        </div>
+        <button class="footer__back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </button>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/darkmode.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/scroll-animations.js"></script>
+</body>
+</html>

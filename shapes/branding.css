@@ -1,0 +1,72 @@
+/* Additional styles for branding section */
+.brand-logo-element {
+    transition: all var(--transition-speed);
+}
+
+.brand-card:hover .brand-logo-element {
+    transform: scale(1.2);
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+}
+
+/* Animation for psychology shapes */
+.psychology-shape {
+    position: relative;
+    overflow: hidden;
+}
+
+.psychology-shape::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.6s ease;
+}
+
+.psychology-card:hover .psychology-shape::after {
+    left: 100%;
+}
+
+/* Keyframes for branding animations */
+@keyframes morph {
+    0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .branding-intro {
+        flex-direction: column;
+    }
+    
+    .brand-examples {
+        grid-template-columns: 1fr;
+    }
+    
+    .psychology-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .morphing-shape {
+        width: 100px;
+        height: 100px;
+    }
+}

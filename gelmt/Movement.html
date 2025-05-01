@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movement: A Design Principle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            /* Light Mode - Movement Theme (using reds/oranges) */
+            --bg-color-light: #fff3e0; /* Light Orange */
+            --text-color-light: #e65100; /* Dark Orange */
+            --card-bg-light: #ffffff;
+            --card-text-light: #e65100;
+            --section-bg-light: #fff3e0;
+            --section-text-light: #e65100;
+            --element-color-primary-light: #ff9800; /* Orange */
+            --element-color-secondary-light: #ffcc80; /* Light Orange */
+            --movement-demo-bg-light: #ffe0b2; /* Lighter Orange */
+
+            /* Wrong Movement Colors (Reds) */
+            --movement-wrong-bg-light: #ffebee; /* Very Light Red */
+            --movement-wrong-element-primary-light: #e53935; /* Red */
+            --movement-wrong-element-secondary-light: #ef9a9a; /* Light Red */
+
+
+            --blurred-bg-light: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNjAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj4gICAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmM2UwIiAvPiAgICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZmZlMGIyIiAvPiAgICA8L2xpbmVhckdyYWRpZW50PiAgICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgZmlsbD0idXJsKCNncmFkMSkiIC8+PC9zdmc+'); /* Light orange gradient */
+        }
+
+        /* Dark Mode - Movement Theme */
+        .dark-mode {
+            --bg-color: #e65100; /* Dark Orange */
+            --text-color: #fff3e0; /* Light Orange */
+            --card-bg: #f57c00; /* Strong Orange */
+            --card-text: #fff3e0;
+            --section-bg: #e65100;
+            --section-text: #fff3e0;
+            --element-color-primary: #ffb74d; /* Light Orange */
+            --element-color-secondary: #ffecb3; /* Very Light Orange */
+            --movement-demo-bg: #bf360c; /* Very Dark Orange */
+
+             /* Wrong Movement Colors (Reds) */
+            --movement-wrong-bg: #b71c1c; /* Very Dark Red */
+            --movement-wrong-element-primary: #ffcdd2; /* Very Light Red */
+            --movement-wrong-element-secondary: #ef9a9a; /* Light Red */
+
+
+             --blurred-bg-dark: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC4yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDgwMCA2MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4gICAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlNjUxMDAiIC8+ICAgICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNTdjMDAiIC8+Pj4KICAgIDwvbGluZWFyR3JhZGllbnQ+ICAgIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSJ1cmwoI2dyYWQyKSIgLz48L3N2Zz4='); /* Dark orange gradient */
+        }
+
+        /* Apply Theme Variables */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+            position: relative; /* Needed for blurred background */
+        }
+
+        /* Blurred Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--blurred-bg, var(--blurred-bg-light));
+            background-size: cover;
+            filter: blur(20px); /* Apply blur effect */
+            z-index: -1; /* Place behind content */
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        section {
+             background-color: var(--section-bg, var(--card-bg-light));
+             color: var(--section-text, var(--card-text-light));
+             transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .color-card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Apply animations */
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-slideInLeft {
+            animation: slideInLeft 1s ease-out forwards;
+        }
+
+        .animate-slideInRight {
+            animation: slideInRight 1s ease-out forwards;
+        }
+
+         .animate-fadeIn {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #333;
+            transition: fill 0.3s ease-in-out;
+        }
+
+        .dark-mode .theme-toggle svg {
+            fill: #f0f0f0;
+        }
+
+        /* CSS for Movement Demonstrations */
+        .movement-demo-container {
+            width: 100%;
+            min-height: 200px; /* Min height for rows */
+            border: 2px solid var(--text-color, var(--text-color-light));
+            border-radius: 8px;
+            margin-top: 20px;
+            overflow: hidden;
+            background-color: var(--movement-demo-bg, var(--movement-demo-bg-light));
+            position: relative; /* For absolute positioning */
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+        }
+
+        .movement-element {
+            width: 30px;
+            height: 30px;
+            background-color: var(--element-color-primary, var(--element-color-primary-light));
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: absolute; /* Position elements freely */
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        /* Example 1: Directional Lines */
+        .movement-demo-container.directional-lines {
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             position: static; /* Override absolute for flex layout */
+        }
+
+        .directional-lines .line {
+            width: 150px;
+            height: 5px;
+            background-color: var(--element-color-primary, var(--element-color-primary-light));
+            margin: 0 10px;
+            transform: rotate(45deg); /* Angled line */
+        }
+
+         .directional-lines .arrowhead {
+             width: 0;
+             height: 0;
+             border-top: 10px solid transparent;
+             border-bottom: 10px solid transparent;
+             border-left: 20px solid var(--element-color-primary, var(--element-color-primary-light));
+         }
+
+        /* Example 2: Flowing Path */
+        .movement-demo-container.flowing-path {
+            position: relative; /* Ensure elements are positioned relative to this container */
+        }
+
+        .flowing-path .movement-element:nth-child(1) { top: 20px; left: 20px; }
+        .flowing-path .movement-element:nth-child(2) { top: 40px; left: 60px; }
+        .flowing-path .movement-element:nth-child(3) { top: 60px; left: 100px; }
+        .flowing-path .movement-element:nth-child(4) { top: 80px; left: 140px; }
+        .flowing-path .movement-element:nth-child(5) { top: 100px; left: 180px; }
+
+
+        /* Example 3: Size/Color Progression */
+         .movement-demo-container.progression {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            position: static; /* Override absolute for flex layout */
+         }
+
+         .progression .movement-element {
+             position: static; /* Override absolute for flex layout */
+             width: 30px;
+             height: 30px;
+         }
+
+         .progression .movement-element:nth-child(1) {
+             width: 20px; height: 20px;
+             background-color: var(--element-color-secondary, var(--element-color-secondary-light));
+         }
+         .progression .movement-element:nth-child(2) {
+             width: 30px; height: 30px;
+         }
+         .progression .movement-element:nth-child(3) {
+             width: 40px; height: 40px;
+             background-color: var(--element-color-primary, var(--element-color-primary-light));
+         }
+         .progression .movement-element:nth-child(4) {
+             width: 50px; height: 50px;
+              background-color: var(--element-color-primary, var(--element-color-primary-light));
+         }
+
+         /* Wrong Movement Example (Conflicting/Chaotic) */
+         .movement-demo-container.wrong-movement {
+             background-color: var(--movement-wrong-bg, var(--movement-wrong-bg-light));
+             border-color: var(--movement-wrong-element-primary, var(--movement-wrong-element-primary-light));
+             display: block; /* Use block for absolute positioning */
+         }
+
+         .wrong-movement .movement-element {
+             position: absolute; /* Keep absolute for chaotic placement */
+             width: 40px;
+             height: 40px;
+             background-color: var(--movement-wrong-element-primary, var(--movement-wrong-element-primary-light));
+             border-radius: 4px;
+             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+         }
+
+         .wrong-movement .element-a { top: 10px; left: 150px; transform: rotate(-30deg); }
+         .wrong-movement .element-b { top: 80px; left: 50px; transform: rotate(45deg); background-color: var(--movement-wrong-element-secondary, var(--movement-wrong-element-secondary-light)); }
+         .wrong-movement .element-c { top: 40px; left: 200px; transform: rotate(90deg); }
+         .wrong-movement .element-d { top: 120px; left: 100px; transform: rotate(-90deg); background-color: var(--movement-wrong-element-secondary, var(--movement-wrong-element-secondary-light)); }
+         .wrong-movement .element-e { top: 70px; left: 300px; transform: rotate(0deg); }
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body class="p-8">
+
+    <button id="themeToggle" class="theme-toggle">
+        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1s1-.45 1-1V3c0-.55-.45-1-1-1zm8.59 2.91l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM4.7 5.61l-.71.71c-.39.39-1.02.39-1.41 0s-.39-1.02 0-1.41l.71-.71c-.39-.39 1.02-.39 1.41 0s.39 1.02 0 1.41zM21 11h-1c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm-18 0H3c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1s-.45-1-1-1zm15.3 5.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM5.61 19.3l.71.71c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"/></svg>
+         <svg class="moon-icon hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c.4-.4.9-.6 1.4-.6.5 0 1 .2 1.4.6.4.4.6.9.6 1.4 0 .5-.2 1-.6 1.4-.4.4-.9.6-1.4.6-.5 0-1-.2-1.4-.6-.4-.4-.6-.9-.6-1.4 0-.5.2-1 .6-1.4zm-.7 10.4c-3.3 0-6-2.7-6-6s2.7-6 6-6c.6 0 1.1.1 1.6.3-.4.8-.6 1.7-.6 2.7 0 3.3 2.7 6 6 6.1 1 .1 1.9-.2 2.7-.6.2.5.3 1 .3 1.6 0 3.3-2.7 6-6 6z"/></svg>
+    </button>
+
+
+    <header class="text-center my-12 animate-fadeIn">
+        <h1 class="text-5xl font-bold mb-4">Creating Visual Movement</h1>
+        <p class="text-xl">Guiding the Viewer's Eye Through Design</p>
+    </header>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInLeft">
+        <h2 class="text-3xl font-semibold mb-6">What is Movement?</h2>
+        <p class="leading-relaxed">
+            Movement in graphic design refers to the way the viewer's eye is directed through a composition. It's not about literal animation, but rather the visual flow created by the arrangement and styling of elements. Designers use movement to guide users through information in a specific order, highlight key areas, and create a dynamic or static feel. Effective movement makes a design intuitive and easy to follow.
+        </p>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-slideInRight">
+        <h2 class="text-3xl font-semibold mb-6">Techniques for Creating Movement</h2>
+        <p class="leading-relaxed mb-6">
+            Visual movement can be achieved through various design elements and principles:
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Lines and Shapes:</strong> Using actual or implied lines, shapes, or edges to point or lead the eye in a direction.</li>
+            <li><strong>Arrangement:</strong> Placing elements in a sequence or along a path.</li>
+            <li><strong>Size and Scale:</strong> Varying the size of elements to create a sense of progression or depth.</li>
+            <li><strong>Color and Contrast:</strong> Using color or contrast to draw the eye from one element to the next.</li>
+            <li><strong>Repetition and Rhythm:</strong> Repeating elements or creating a visual rhythm to establish a flow.</li>
+            <li><strong>Typography:</strong> Using hierarchy and flow in text (e.g., headlines leading to body copy).</li>
+        </ul>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Demonstrating Movement</h2>
+        <p class="leading-relaxed mb-8">
+            Let's visualize how different arrangements and styling create a sense of visual movement.
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Directional Lines (Good Movement)</h3>
+                <div class="movement-demo-container directional-lines">
+                    <div class="line"></div>
+                    <div class="arrowhead"></div>
+                </div>
+                <p class="text-sm text-center mt-2">
+                    Lines and shapes can explicitly point the viewer's eye in a clear direction.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Flowing Path (Good Movement)</h3>
+                <div class="movement-demo-container flowing-path">
+                     <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                </div>
+                 <p class="text-sm text-center mt-2">
+                    Arranging elements in a sequence creates a smooth, predictable visual path.
+                </p>
+            </div>
+
+             <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Size and Color Progression (Good Movement)</h3>
+                <div class="movement-demo-container progression">
+                     <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                    <div class="movement-element"></div>
+                </div>
+                 <p class="text-sm text-center mt-2">
+                    Gradual changes in size and color create a sense of moving forward or backward.
+                </p>
+            </div>
+
+             <div>
+                <h3 class="text-xl font-semibold mb-4 text-center">Conflicting Movement (Wrong)</h3>
+                <div class="movement-demo-container wrong-movement">
+                     <div class="movement-element element-a"></div>
+                    <div class="movement-element element-b"></div>
+                    <div class="movement-element element-c"></div>
+                    <div class="movement-element element-d"></div>
+                     <div class="movement-element element-e"></div>
+                </div>
+                <p class="text-sm text-center mt-2">
+                    Elements pointing in multiple directions or placed without clear organization create visual confusion.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+     <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg animate-fadeIn">
+        <h2 class="text-3xl font-semibold mb-6">Movement in UI/UX and Psychology</h2>
+        <p class="leading-relaxed mb-8">
+            Controlling visual movement in UI/UX design is crucial for guiding users and ensuring a smooth experience.
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Guiding User Flow:</strong> Designers use movement to direct users through the interface, ensuring they see key information and calls to action in the intended order.</li>
+            <li><strong>Improving Scanability:</strong> A clear visual flow makes it easier for users to quickly scan a page and find relevant content.</li>
+            <li><strong>Creating Engagement:</strong> Dynamic movement can make an interface feel more lively and engaging, capturing the user's attention.</li>
+            <li><strong>Establishing Hierarchy:</strong> Movement often works in conjunction with hierarchy, guiding the eye from the most important elements to less important ones.</li>
+            <li><strong>Influencing Pace:</strong> The speed and direction of visual movement can influence the user's pace of interaction and their overall feeling about the interface (e.g., fast-paced vs. calm).</li>
+        </ul>
+    </section>
+
+    <footer class="text-center my-12 text-sm animate-fadeIn">
+        <p>&copy; 2023 Design Principles Explained</p>
+    </footer>
+
+    <script>
+        // JavaScript for animations and theme toggle
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Optional: Add intersection observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible'); // Add a class to trigger CSS animation
+                        entry.target.classList.remove('animate-slideInLeft', 'animate-slideInRight', 'animate-fadeIn'); // Remove initial animation classes
+                         // Re-add the animation class to trigger it on scroll
+                        if (entry.target.classList.contains('initial-animate-slideInLeft')) {
+                             entry.target.classList.add('animate-slideInLeft');
+                        } else if (entry.target.classList.contains('initial-animate-slideInRight')) {
+                             entry.target.classList.add('animate-slideInRight');
+                        } else if (entry.target.classList.contains('initial-animate-fadeIn')) {
+                             entry.target.classList.add('animate-fadeIn');
+                        }
+                        entry.target.style.opacity = 1; // Ensure visibility after animation
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, observerOptions);
+
+            // Add initial animation classes and observe sections
+            document.querySelectorAll('section, header, footer').forEach(section => {
+                if (section.classList.contains('animate-slideInLeft')) {
+                    section.classList.add('initial-animate-slideInLeft'); // Mark for re-adding
+                    section.classList.remove('animate-slideInLeft'); // Remove to wait for scroll
+                } else if (section.classList.contains('animate-slideInRight')) {
+                     section.classList.add('initial-animate-slideInRight');
+                     section.classList.remove('animate-slideInRight');
+                } else if (section.classList.contains('animate-fadeIn')) {
+                     section.classList.add('initial-animate-fadeIn');
+                     section.classList.remove('animate-fadeIn');
+                }
+                section.style.opacity = 0; // Hide initially
+                observer.observe(section);
+            });
+
+             // Add a class for visible state to trigger the animation
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                .visible {
+                    opacity: 1 !important;
+                }
+            `, styleSheet.cssRules.length);
+
+            // Theme Toggle Logic
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            const sunIcon = themeToggle.querySelector('.sun-icon');
+            const moonIcon = themeToggle.querySelector('.moon-icon');
+
+            // Check for saved theme in local storage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                 // Default to light mode if no theme is saved or saved theme is not dark
+                body.classList.remove('dark-mode');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+
+                // Toggle icons
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+
+                // Save theme preference to local storage
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>

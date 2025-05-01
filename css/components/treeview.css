@@ -1,0 +1,97 @@
+.tree {
+    --indent: 1.5rem;
+    --icon-size: 1rem;
+    list-style: none;
+  }
+  
+  .tree__item {
+    position: relative;
+  }
+  
+  .tree__button {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--space-2xs) var(--space-xs);
+    background: none;
+    border: none;
+    text-align: left;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: var(--transition-colors);
+    border-radius: var(--rounded-sm);
+  }
+  
+  .tree__button:hover {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
+  
+  .tree__button[aria-expanded="true"] {
+    color: var(--foreground);
+  }
+  
+  .tree__button[aria-current="page"] {
+    background-color: var(--primary-50);
+    color: var(--primary-600);
+    font-weight: 500;
+  }
+  
+  .tree__icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin-right: var(--space-xs);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  
+  .tree__button[aria-expanded="true"] .tree__icon {
+    transform: rotate(90deg);
+  }
+  
+  .tree__group {
+    list-style: none;
+    padding-left: var(--indent);
+    overflow: hidden;
+    height: 0;
+    transition: height 0.3s ease;
+  }
+  
+  .tree__button[aria-expanded="true"] + .tree__group {
+    height: auto;
+  }
+  
+  .tree__link {
+    display: flex;
+    align-items: center;
+    padding: var(--space-2xs) var(--space-xs);
+    color: var(--muted-foreground);
+    text-decoration: none;
+    border-radius: var(--rounded-sm);
+    transition: var(--transition-colors);
+  }
+  
+  .tree__link:hover {
+    background-color: var(--muted);
+    color: var(--foreground);
+  }
+  
+  .tree__link--active {
+    background-color: var(--primary-50);
+    color: var(--primary-600);
+    font-weight: 500;
+  }
+  
+  /* Animated tree view */
+  .tree--animated .tree__group {
+    animation: fade-in 0.3s ease forwards;
+  }
+  
+  .tree--animated .tree__icon {
+    transition: transform 0.3s var(--animation-bounce);
+  }
+  
+  /* Nested levels */
+  .tree__item--level-2 { --indent: 2.5rem; }
+  .tree__item--level-3 { --indent: 3.5rem; }
+  .tree__item--level-4 { --indent: 4.5rem; }

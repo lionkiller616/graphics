@@ -1,0 +1,173 @@
+/* Color Theory Section Styles */
+.theory-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.color-wheel-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    position: relative;
+}
+
+.color-wheel {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: conic-gradient(
+        red, yellow, lime, cyan, 
+        blue, magenta, red
+    );
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.color-wheel:hover {
+    transform: scale(1.05) rotate(15deg);
+}
+
+.color-wheel::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.color-theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.theory-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: var(--transition);
+    cursor: default;
+}
+
+.theory-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.theory-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.theory-card h3 i {
+    margin-right: 0.5rem;
+}
+
+.theory-card p {
+    margin-bottom: 1rem;
+}
+
+.color-example {
+    display: flex;
+    height: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.color-example span {
+    flex: 1;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.color-example span:hover {
+    flex: 1.5;
+    z-index: 1;
+}
+
+.color-example span::after {
+    content: attr(data-color);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.color-example span:hover::after {
+    opacity: 1;
+    bottom: -25px;
+}
+
+.color-schemes {
+    margin-top: 2rem;
+}
+
+.scheme-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.scheme {
+    flex: 1;
+    min-width: 200px;
+    background: var(--glass-bg);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: var(--transition);
+}
+
+.scheme:hover {
+    transform: scale(1.02);
+}
+
+.scheme h4 {
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+.scheme-colors {
+    display: flex;
+    height: 40px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.scheme-colors span {
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.scheme-colors span:hover {
+    flex: 1.5;
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .color-wheel {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .theory-card {
+        padding: 1rem;
+    }
+}

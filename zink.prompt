@@ -1,0 +1,105 @@
+You are a senior front-end engineer, UI/UX designer and performance expert.  
+Generate a **complete**, single-page HTML/CSS/JavaScript project called “CSS Motion Playground Pro” that incorporates **all** of the following:
+
+1. **Project Structure & Semantics**  
+   - Single `index.html` referencing `styles.css`, `scripts.js`, and an optional `components/` subfolder.  
+   - Use HTML5 semantic tags (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`).  
+   - Include `<meta>` tags for:  
+     - Responsive viewport  
+     - SEO (title, description, keywords)  
+     - Open Graph (og:title, og:description, og:image placeholder)  
+     - Web app manifest link (for PWA)
+
+2. **Design System & Theming**  
+   - CSS variables for: color palette (see below), spacing scale, type scale, border-radius, z-index layers.  
+   - **Color palette** grounded in color psychology + color wheel:  
+     - `--color-primary` (soft blue for trust/calming)  
+     - `--color-secondary` (warm orange for creativity)  
+     - `--color-accent` (energetic yellow/green)  
+     - Neutrals: `--gray-100` to `--gray-900`  
+     - Dark and light theme variations (switchable via toggle, persisted in `localStorage`).  
+   - Utility classes (`.u-pt-4`, `.u-flex`, `.u-gap-2`, etc.) alongside ITCSS/BEM component structure.
+
+3. **Responsive Layout & Components**  
+   - Mobile-first flexbox/grid layout that seamlessly scales from 320px to 1920px.  
+   - **Components** to generate via inline SVG or CSS shapes (no external images/videos):  
+     - **Header** with logo (CSS-drawn “sticker” mascot), nav links, theme toggle.  
+     - **Sidebar** drawer on mobile, collapsible on desktop, with animation.  
+     - **Hero section** featuring a CSS character (e.g. bouncing robot) with keyframe animation and a “Try It!” button.  
+     - **Playground panel**:  
+       • Controls for animation speed, easing functions, color pickers (using the CSS variables).  
+       • Real-time preview area for SVG/CSS character.  
+     - **Modal dialog** component (accessible, ARIA-enabled) for “About” or “Settings.”  
+     - **Toast notification** component (e.g. “Settings saved.”).  
+     - **Tooltip** component on hover/focus for buttons and controls.  
+     - **Form** component with input validation, custom focus styles, and animated submit button.  
+     - **Accordion** or **tabs** component to organize multiple demos.  
+     - **Skeleton loader** and **spinner** for simulated network delays.  
+     - **CSS chart** (bar or donut) drawn with SVG + CSS keyframes as a data-viz demo.
+
+4. **Animation & Interaction Principles**  
+   - All vector art drawn via HTML+CSS (divs, pseudo-elements) or inline SVG.  
+   - **CSS Animations**:  
+     - Keyframes using motion easing (ease-in, ease-out, ease-in-out, custom bezier).  
+     - Principles: anticipation, squash/stretch, follow-through, staggered delay.  
+   - **JavaScript**:  
+     - Module pattern (`scripts.js` ES6 modules) to toggle animation presets, theme, sidebar state, and to trigger modals/toasts.  
+     - Debounced event listeners for resize and input sliders.  
+   - **Micro-interactions**: hover, focus, active states with subtle transforms and color transitions.
+
+5. **Accessibility & Internationalization**  
+   - Keyboard navigation (logical tab order, focus ring styles).  
+   - ARIA roles/labels on interactive elements.  
+   - Alternative text for inline SVG icons.  
+   - Dark/light theme toggle with `prefers-color-scheme` fallback.  
+   - Basic i18n setup: wrap display strings in a JS dictionary for future translation.
+
+6. **Performance Optimizations**  
+   - Critical-CSS in `<head>` and deferred non-critical CSS via `media="print"` hack or `loadCSS` pattern.  
+   - Minified CSS/JS (simulate via comments).  
+   - `defer` and `async` on script tags appropriately.  
+   - Preload key fonts and critical SVG assets.  
+   - Lazy-load offscreen components (e.g. accordions tabs content).  
+   - Service Worker registration for offline PWA caching (cache-first strategy).  
+   - Lighthouse budget: keep initial load under 200 KB gzipped.
+
+7. **SEO, Analytics & PWA**  
+   - JSON-LD structured data for an “Interactive Playground”  
+   - Link to a basic `manifest.json` (name, short_name, icons array).  
+   - Register a Service Worker in `scripts.js`.  
+   - Placeholder for Google Analytics (or open-source Matomo) snippet, loaded asynchronously.
+
+8. **Testing, Build & Deployment**  
+   - Include comments describing a future build step: CSS/JS minification, image (SVG) optimizations, cache busting.  
+   - Outline unit test stubs for JS functions (e.g. `toggleTheme()`, `showToast()`).  
+   - Suggest CI/CD: GitHub Actions to lint, test, build, then deploy to GitHub Pages or Netlify.
+
+9. **Documentation & Community**  
+   - In-code comments explaining each animation, design decision, and optimization.  
+   - A `README.md` blueprint (described in comments) with:  
+     • Project overview  
+     • Setup instructions  
+     • Contribution guidelines  
+     • License placeholder
+
+Ensure the final deliverable is **self-contained**—no references to external photos or videos—and demonstrates mastery of UI/UX design principles, CSS/JS animations, and performance engineering.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

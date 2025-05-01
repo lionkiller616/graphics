@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line: A Design Element</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color-light: #a0c4ff; /* Jordy Blue */
+            --text-color-light: #1a237e;
+            --card-bg-light: #ffffff;
+            --card-text-light: #1a237e;
+            --section-bg-light: #ffffff; /* Periwinkle */
+            --section-text-light: #1a237e;
+            --demo-bg-light: #e1f5fe;
+        }
+
+        .dark-mode {
+            --bg-color: #1a237e;
+            --text-color: #e1f5fe;
+            --card-bg: #303f9f;
+            --card-text: #e1f5fe;
+            --section-bg: #1a237e;
+            --section-text: #e1f5fe;
+            --demo-bg: #0d47a1;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color, var(--bg-color-light));
+            color: var(--text-color, var(--text-color-light));
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .color-card {
+            background-color: var(--card-bg, var(--card-bg-light));
+            color: var(--card-text, var(--card-text-light));
+            transition: all 0.3s ease;
+        }
+
+        section {
+            background-color: var(--section-bg, var(--section-bg-light));
+            color: var(--section-text, var(--section-text-light));
+        }
+
+        .line-demo {
+        background-color: var(--demo-bg, var(--demo-bg-light));
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        gap: 0.5rem;
+        }
+
+        .line {
+        width: 80%;
+        height: 2px;
+        background-color: var(--text-color, var(--text-color-light));
+        }
+
+        .line.thick {
+        height: 6px;
+        }
+
+        .line.dashed {
+        background: none;
+        border-top: 2px dashed var(--text-color, var(--text-color-light));
+        height: 0;
+        }
+
+        .line.zigzag {
+        background: none;
+        height: 10px;
+        background-image:
+            repeating-linear-gradient(-45deg,
+            var(--text-color, var(--text-color-light)) 0,
+            var(--text-color, var(--text-color-light)) 2px,
+            transparent 2px,
+            transparent 4px);
+        }
+
+        .line.curved {
+        width: 80%;
+        height: 40px;
+        border-top: 2px solid var(--text-color, var(--text-color-light));
+        border-radius: 100px 100px 0 0 / 100px 100px 0 0;
+        background: none;
+        }
+
+    </style>
+</head>
+<body class="p-8">
+    <header class="text-center my-12">
+        <h1 class="text-5xl font-bold mb-4">The Power of Line</h1>
+        <p class="text-xl">Fundamental Element of Visual Communication</p>
+    </header>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-semibold mb-6">What is Line in Design?</h2>
+        <p class="leading-relaxed">
+            A line is a basic element of design that connects two points. It can vary in width, length, direction, and character. Lines are used to:
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3 mt-4">
+            <li>Divide space</li>
+            <li>Create outlines and contours</li>
+            <li>Suggest movement or direction</li>
+            <li>Convey emotion through their quality</li>
+            <li>Lead the viewer's eye through a composition</li>
+        </ul>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-semibold mb-6">Types of Lines</h2>
+        <div class="line-demo rounded-lg mb-8">
+            <div class="line"></div>
+            <div class="line thick"></div>
+            <div class="line dashed"></div>
+            <div class="line zigzag"></div>
+            <div class="line curved"></div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Straight Lines</h3>
+                <p>Suggest order, rigidity, or efficiency</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Curved Lines</h3>
+                <p>Convey fluidity, grace, or natural movement</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Diagonal Lines</h3>
+                <p>Implies action, dynamism, or tension</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Zigzag Lines</h3>
+                <p>Create excitement, chaos, or energy</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Thick Lines</h3>
+                <p>Appear strong, bold, or important</p>
+            </div>
+            <div class="p-4 rounded-lg bg-white bg-opacity-80">
+                <h3 class="font-bold mb-2">Thin Lines</h3>
+                <p>Seem delicate, precise, or fragile</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto my-16 p-8 rounded-xl shadow-lg">
+        <h2 class="text-3xl font-semibold mb-6">Psychology of Lines</h2>
+        <p class="leading-relaxed mb-6">
+            Lines have profound psychological impacts on viewers:
+        </p>
+        <ul class="list-disc list-inside leading-relaxed space-y-3">
+            <li><strong>Horizontal lines</strong> suggest calm, stability, and rest</li>
+            <li><strong>Vertical lines</strong> communicate strength, formality, and growth</li>
+            <li><strong>Diagonal lines</strong> create movement, energy, and tension</li>
+            <li><strong>Curved lines</strong> feel natural, organic, and comforting</li>
+            <li><strong>Jagged lines</strong> evoke excitement, chaos, or danger</li>
+        </ul>
+    </section>
+
+    <footer class="text-center my-12 text-sm">
+        <p>&copy; 2023 Design Elements Explained</p>
+    </footer>
+</body>
+</html>
